@@ -6,6 +6,7 @@ import LectureConsole from "./pages/lectureConsole/main"
 
 import {Route, Routes} from "react-router-dom";
 import StudentJoin from "./pages/studenJoin/main";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 
 function App() {
     const count = useAppSelector((state) => state.counter.value)
@@ -19,12 +20,21 @@ function App() {
         dispatch(amountAdded(3))
     }
 
+    const darkTheme = createTheme({
+        palette: {
+            mode: "dark"
+        }
+    })
+
     return (
         <div className="App">
-            <Routes>
-                <Route path="/" element={ <LectureConsole /> } />
-                <Route path="/join" element={ <StudentJoin /> } />
-            </Routes>
+            <ThemeProvider theme={darkTheme}>
+                <CssBaseline />
+                <Routes>
+                    <Route path="/" element={<LectureConsole/>}/>
+                    <Route path="/join" element={<StudentJoin/>}/>
+                </Routes>
+            </ThemeProvider>
         </div>
     )
 }
