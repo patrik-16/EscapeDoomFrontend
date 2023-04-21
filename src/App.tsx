@@ -10,6 +10,7 @@ import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 
 function App() {
     const count = useAppSelector((state) => state.counter.value)
+
     const dispatch = useAppDispatch()
 
     const handleClick = () => {
