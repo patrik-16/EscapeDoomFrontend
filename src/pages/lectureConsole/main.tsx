@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import TopAppBar from "./TopAppBar";
 import RoomCard from "./RoomCard";
 import {Divider, Grid, Stack, Typography} from "@mui/material";
@@ -7,10 +7,39 @@ import Box from "@mui/material/Box";
 import BackgroundImage1 from '../../assets/live-escape-game-1155620.jpg'
 import BackgroundImage2 from '../../assets/ankhesenamun-KitGM-GDgOI-unsplash.jpg'
 import EscapeRooms from '../../data/EscapeRoomsProp.json'
+import {getLectureToken} from "../../utils/TokenHandler";
+import {useNavigate} from "react-router-dom";
 //rsc
 
 const backgroundImages = [BackgroundImage1, BackgroundImage2]
 const LectureConsole = () => {
+
+    const navigate = useNavigate()
+    const [lectureData, setLectureData] = useState([{}])
+
+    useEffect(() => {
+        console.log(getLectureToken())
+        if (getLectureToken() === null || getLectureToken() === undefined) {
+            navigate("/login")
+            return
+        }
+
+        const headers = new Headers()
+        headers.append("Content-Type", "application/json")
+        headers.append("Authorization", "Bearer " + getLectureToken())
+
+        fetch("http://localhost:8080/api/v1/portal-escape-room/getAll", {
+            method: 'GET',
+            headers: headers
+        })
+            .then(r => r.json())
+            .then(data => {
+                setLectureData(prevState => {
+                    return {...prevState, items: data[0]}
+                })
+            })
+    }, [])
+
     return (
         <div>
             <TopAppBar/>
@@ -22,7 +51,7 @@ const LectureConsole = () => {
                     </Stack>
                     <Grid container spacing={{md: 6, lg: 12}}>
                         {EscapeRooms.escapeRooms.map((escroom, index) => (
-                            <Grid item lg={6} sm={12}>
+                            <Grid key={index} item lg={6} sm={12}>
                                 <RoomCard name={escroom.name} topic={escroom.topic} imgUrl={backgroundImages[index % 2]}
                                           time={escroom.time}/>
                             </Grid>

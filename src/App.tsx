@@ -1,12 +1,14 @@
-import {useState} from 'react'
+import React, {useState} from 'react'
 import {useAppSelector, useAppDispatch} from './hooks/counterHook'
 import {incremented, amountAdded} from './store/counter-slice'
 
 import LectureConsole from "./pages/lectureConsole/main"
 
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, RedirectFunction, Navigate} from "react-router-dom";
 import StudentJoin from "./pages/studenJoin/main";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import Login from "./pages/login/main";
+import useToken from "./utils/TokenHandler";
 
 function App() {
     const count = useAppSelector((state) => state.counter.value)
@@ -32,8 +34,9 @@ function App() {
             <ThemeProvider theme={darkTheme}>
                 <CssBaseline />
                 <Routes>
-                    <Route path="/" element={<LectureConsole/>}/>
-                    <Route path="/join" element={<StudentJoin/>}/>
+                    <Route path="/" element={<StudentJoin/>} />
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/LectureConsole" element={<LectureConsole />}/>
                 </Routes>
             </ThemeProvider>
         </div>
