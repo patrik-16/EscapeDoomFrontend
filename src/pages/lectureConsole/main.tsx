@@ -15,9 +15,14 @@ const backgroundImages = [BackgroundImage1, BackgroundImage2]
 const LectureConsole = () => {
 
     const navigate = useNavigate()
-    const [lectureData, setLectureData] = useState([{}])
+    const [lectureData, setLectureData] = useState([])
 
     useEffect(() => {
+        //FIXME: When token invalid or no escape rooms available... stop fetching
+        if (lectureData.length != 0) {
+            console.log(lectureData)
+            return;
+        }
         console.log(getLectureToken())
         if (getLectureToken() === null || getLectureToken() === undefined) {
             navigate("/login")
@@ -34,11 +39,9 @@ const LectureConsole = () => {
         })
             .then(r => r.json())
             .then(data => {
-                setLectureData(prevState => {
-                    return {...prevState, items: data[0]}
-                })
+                setLectureData(data)
             })
-    }, [])
+    }, [lectureData])
 
     return (
         <div>
@@ -48,12 +51,12 @@ const LectureConsole = () => {
                     <Stack direction="row" alignItems="center">
                         <Typography fontSize="16" fontWeight="bold" mr={2}> Your Escape Rooms </Typography>
                         <Divider sx={{flexGrow: 1, borderBottomWidth: 3}} orientation="horizontal"/>
-                    </Stack>
+                    </Stack>                    
                     <Grid container spacing={{md: 6, lg: 12}}>
-                        {EscapeRooms.escapeRooms.map((escroom, index) => (
+                        {lectureData.map(({name, topic, time, escapeRoomState, escaproom_id}, index) => (
                             <Grid key={index} item lg={6} sm={12}>
-                                <RoomCard name={escroom.name} topic={escroom.topic} imgUrl={backgroundImages[index % 2]}
-                                          time={escroom.time}/>
+                                <RoomCard name={name} topic={topic} imgUrl={backgroundImages[index % 2]}
+                                          time={time} escapeRoomState={escapeRoomState} id={escaproom_id}/>
                             </Grid>
                         ))}
                     </Grid>
