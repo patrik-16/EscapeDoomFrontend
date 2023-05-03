@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -6,9 +6,9 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {AccessTime, Circle, Close, OpenInBrowser, PlayArrow} from "@mui/icons-material";
-import {CardActionArea, Icon, Stack} from "@mui/material";
+import {CardActionArea, Icon, Skeleton, Stack} from "@mui/material";
 import {formatTime} from "../../utils/TimeFormatter";
-import { openEscapeRoom, startEscapeRoom, stopEscapeRoom } from '../../utils/ApiCallHandler';
+import {openEscapeRoom, startEscapeRoom, stopEscapeRoom} from '../../utils/ApiCallHandler';
 
 interface Props {
     name: String,
@@ -19,11 +19,11 @@ interface Props {
     id: number
 }
 
-const stateColor = (escapeRoomState: string) =>{
+const stateColor = (escapeRoomState: string) => {
     switch (escapeRoomState) {
         case 'STOPPED':
             return '#ff0000'
-        case 'JOINABLE': 
+        case 'JOINABLE':
             return '#ffff00'
         case 'PLAYING':
             return '#00ff00'
@@ -38,15 +38,16 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
         openEscapeRoom(id).then(msg => console.log(msg))
         setStatus('JOINABLE')
     }
-    
+
     const startRoom = (id: number) => {
         startEscapeRoom(id).then(msg => console.log(msg))
         setStatus('PLAYING')
     }
-    
+
     const stopRoom = (id: number) => {
         stopEscapeRoom(id).then(msg => console.log(msg))
         setStatus('STOPPED')
+        //TODO: Ask Maxl if we remove players on stop
     }
 
     const logger = () => {

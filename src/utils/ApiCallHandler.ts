@@ -3,7 +3,7 @@ import { getLectureToken } from "./TokenHandler"
 const headers = new Headers()
 headers.append("Content-Type", "application/json")
 
-export async function joinEscapeRoom(id: string): Promise<string> {
+export async function joinEscapeRoom(id: string) {
 
    const response = (await fetch(`http://localhost:8090/api/join/${id}`, {
         method: 'GET',

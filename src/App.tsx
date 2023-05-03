@@ -1,27 +1,13 @@
 import React, {useState} from 'react'
-import {useAppSelector, useAppDispatch} from './hooks/counterHook'
-import {incremented, amountAdded} from './store/counter-slice'
 
 import LectureConsole from "./pages/lectureConsole/main"
-
 import {Route, Routes, RedirectFunction, Navigate} from "react-router-dom";
 import StudentJoin from "./pages/studenJoin/main";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import Login from "./pages/login/main";
-import useToken from "./utils/TokenHandler";
+import EscapeView from "./pages/escapeView/main";
 
 function App() {
-    const count = useAppSelector((state) => state.counter.value)
-
-    const dispatch = useAppDispatch()
-
-    const handleClick = () => {
-        // increment by 1
-        // dispatch(incremented())
-
-        // increment by a fixed amount
-        dispatch(amountAdded(3))
-    }
 
     const darkTheme = createTheme({
         palette: {
@@ -32,11 +18,12 @@ function App() {
     return (
         <div className="App">
             <ThemeProvider theme={darkTheme}>
-                <CssBaseline />
+                <CssBaseline/>
                 <Routes>
-                    <Route path="/" element={<StudentJoin/>} />
+                    <Route path="/" element={<StudentJoin/>}/>
                     <Route path="/login" element={<Login/>}/>
-                    <Route path="/LectureConsole" element={<LectureConsole />}/>
+                    <Route path="/LectureConsole" element={<LectureConsole/>}/>
+                    <Route path="/game-session" element={<EscapeView initialValue={"const a = 1"}/>}/>
                 </Routes>
             </ThemeProvider>
         </div>
