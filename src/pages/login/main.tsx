@@ -4,40 +4,38 @@ import {LockOutlined} from "@mui/icons-material";
 import Box from "@mui/material/Box";
 import {useNavigate} from "react-router-dom";
 import useToken from "../../utils/TokenHandler";
+import { usePost } from '../../hooks/usePost';
+
 
 const Login = () => {
     const navigate = useNavigate()
     const [open, setOpen] = useState(false)
     const [token, setToken] = useToken()
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
     const handleClose = () => setOpen(false)
 
-    function logIn (e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        const data = new FormData(e.currentTarget)
-        const email: string = data.get('email') as string
-        const password: string = data.get('password') as string
+    const onChangePassword = (event: any) => {
+        setPassword(event.target.value)
+    }
 
-        const headers = new Headers()
-        headers.append("Content-Type", "application/json")
+    const onChangeEmail = (event: any) => {
+        setEmail(event.target.value)
+    }
 
-        fetch("http://localhost:8080/api/v1/auth/authenticate", {
-            headers: headers,
-            method: "POST",
-            body: JSON.stringify({
-                "email": email,
-                "password": password
-            })
-        })
-        .then(r => r.json())
-        .then(data => {
-        // @ts-ignore
-            setToken(data.token)
-            console.log(token)
-            if (token !== null && token !== undefined) { navigate("/LectureConsole") }
-        })
-        .catch(err => {
+    const {data, isLoading, isFetching, isError, error, refetch} = usePost("http://localhost:8080/api/v1/auth/authenticate", email, password)
+
+    async function login (e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        const refetchResponse = (await refetch())
+        if (!refetchResponse.isError) {
+            //@ts-ignore
+            setToken(refetchResponse.data?.token)
+            navigate("/LectureConsole")
+        } else {
             setOpen(true)
-        })
+        }
     }
 
     return (
@@ -57,7 +55,7 @@ const Login = () => {
                     <Typography component="h1" variant="h5">
                         Log In!
                     </Typography>
-                    <Box component="form" onSubmit={logIn} noValidate mt={1}>
+                    <Box component="form" onSubmit={login} noValidate mt={1}>
                         <TextField
                             margin="normal"
                             required
@@ -65,6 +63,7 @@ const Login = () => {
                             id="email"
                             label="Email Address"
                             name="email"
+                            onChange={onChangeEmail}
                             autoComplete="email"
                             autoFocus
                         />
@@ -76,6 +75,7 @@ const Login = () => {
                             label="Password"
                             type="password"
                             id="password"
+                            onChange={onChangePassword}
                             autoComplete="current-password"
                         />
                         <Button
@@ -91,7 +91,7 @@ const Login = () => {
             </Container>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
-                    The given account is not in our database
+                    Logging in didn't work! Make sure you use the correct credentials
                 </Alert>
             </Snackbar>
 

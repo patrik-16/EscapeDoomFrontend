@@ -1,4 +1,4 @@
-import {SetStateAction, useState} from "react";
+import { SetStateAction, useState } from "react";
 
 const tokenString = 'token'
 
@@ -13,7 +13,7 @@ export default function useToken() {
     const [token, setToken] = useState(getToken())
 
     // @ts-ignore
-    function setLectureToken (lectureToken: string): void {
+    function setLectureToken(lectureToken: string): void {
         sessionStorage.setItem(tokenString, lectureToken)
         setToken(lectureToken)
     }

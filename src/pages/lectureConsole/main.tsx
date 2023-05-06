@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import TopAppBar from "./TopAppBar";
 import RoomCard from "./RoomCard";
-import {Button, Divider, Grid, Skeleton, Stack, Typography} from "@mui/material";
-import Box from "@mui/material/Box";
-
+import {Alert, Button, Divider, Grid, Skeleton, Snackbar, Stack, Typography} from "@mui/material";
+import Box from "@mui/material/Box"
 import BackgroundImage1 from '../../assets/live-escape-game-1155620.jpg'
 import BackgroundImage2 from '../../assets/ankhesenamun-KitGM-GDgOI-unsplash.jpg'
-import {getLectureToken} from "../../utils/TokenHandler";
 import {useNavigate} from "react-router-dom";
 import {useGet} from "../../hooks/useGet";
 import RoomCardSkeleton from "./RoomCardSkeleton";
@@ -16,7 +14,14 @@ const backgroundImages = [BackgroundImage1, BackgroundImage2]
 const LectureConsole = () => {
 
     const navigate = useNavigate()
-    const {data, isLoading, isError} = useGet()
+    const {data, isLoading, isError, error} = useGet()
+
+    useEffect(() => {
+        //@ts-ignore
+        if (error?.response.status === 403 && !isLoading) {
+            navigate("/login")
+        }
+    }, [isError])
 
     return (
         <div>
