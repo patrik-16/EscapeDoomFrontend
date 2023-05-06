@@ -6,9 +6,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {AccessTime, Circle, Close, OpenInBrowser, PlayArrow} from "@mui/icons-material";
-import {CardActionArea} from "@mui/material";
+import {Alert, CardActionArea, Snackbar} from "@mui/material";
 import {formatTime} from "../../utils/TimeFormatter";
-import {openEscapeRoom, startEscapeRoom, stopEscapeRoom} from '../../utils/ApiCallHandler';
 import { usePost } from '../../hooks/usePost';
 
 interface Props {
@@ -34,25 +33,42 @@ const stateColor = (escapeRoomState: string) => {
 const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
 
     const [status, setStatus] = useState(escapeRoomState)
+    const [open, setOpen] = useState(false)
+    const handleClose = () => setOpen(false)
 
     const openEscapeRoomCall = usePost(`http://localhost:8080/api/v1/portal-escape-room/openEscapeRoom/${id}`)
     const startEscapeRoomCall = usePost(`http://localhost:8080/api/v1/portal-escape-room/startEscapeRoom/${id}`)
     const stopEscapeRoomCall = usePost(`http://localhost:8080/api/v1/portal-escape-room/stopEscapeRoom/${id}`)
 
-    const openRoom = () => {
-        openEscapeRoom(id).then(msg => console.log(msg))
-        setStatus('JOINABLE')
+    //TODO: Make this into reusable function
+    const openRoom = async () => {
+        const refetchResponse = (await openEscapeRoomCall.refetch())
+        if (!refetchResponse.isError) {
+            console.log(refetchResponse)
+            setStatus('JOINABLE')
+        } else {
+            setOpen(true)
+        }
     }
 
-    const startRoom = () => {
-        startEscapeRoom(id).then(msg => console.log(msg))
-        setStatus('PLAYING')
+    const startRoom = async () => {
+        const refetchResponse = (await startEscapeRoomCall.refetch())
+        if (!refetchResponse.isError) {
+            console.log(refetchResponse)
+            setStatus('PLAYING')
+        } else {
+            setOpen(true)
+        }
     }
 
-    const stopRoom = () => {
-        stopEscapeRoom(id).then(msg => console.log(msg))
-        setStatus('STOPPED')
-        //TODO: Ask Maxl if we remove players on stop
+    const stopRoom = async () => {
+        const refetchResponse = (await stopEscapeRoomCall.refetch())
+        if (!refetchResponse.isError) {
+            console.log(refetchResponse)
+            setStatus('STOPPED')
+        } else {
+            setOpen(true)
+        }
     }
 
     const logger = () => {
@@ -84,6 +100,11 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
                 <Button onClick={stopRoom} startIcon={<Close/>}> Close </Button>
                 <Button disabled sx={{marginLeft: "auto"}} startIcon={<AccessTime/>}> {formatTime(time)} </Button>
             </CardActions>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="info" sx={{width: '100%'}}>
+                    Moving from {status} to the desired state not possible
+                </Alert>
+            </Snackbar>
         </Card>
     );
 };
