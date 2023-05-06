@@ -6,9 +6,10 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {AccessTime, Circle, Close, OpenInBrowser, PlayArrow} from "@mui/icons-material";
-import {CardActionArea, Icon, Skeleton, Stack} from "@mui/material";
+import {CardActionArea} from "@mui/material";
 import {formatTime} from "../../utils/TimeFormatter";
 import {openEscapeRoom, startEscapeRoom, stopEscapeRoom} from '../../utils/ApiCallHandler';
+import { usePost } from '../../hooks/usePost';
 
 interface Props {
     name: String,
@@ -34,17 +35,21 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
 
     const [status, setStatus] = useState(escapeRoomState)
 
-    const openRoom = (id: number) => {
+    const openEscapeRoomCall = usePost(`http://localhost:8080/api/v1/portal-escape-room/openEscapeRoom/${id}`)
+    const startEscapeRoomCall = usePost(`http://localhost:8080/api/v1/portal-escape-room/startEscapeRoom/${id}`)
+    const stopEscapeRoomCall = usePost(`http://localhost:8080/api/v1/portal-escape-room/stopEscapeRoom/${id}`)
+
+    const openRoom = () => {
         openEscapeRoom(id).then(msg => console.log(msg))
         setStatus('JOINABLE')
     }
 
-    const startRoom = (id: number) => {
+    const startRoom = () => {
         startEscapeRoom(id).then(msg => console.log(msg))
         setStatus('PLAYING')
     }
 
-    const stopRoom = (id: number) => {
+    const stopRoom = () => {
         stopEscapeRoom(id).then(msg => console.log(msg))
         setStatus('STOPPED')
         //TODO: Ask Maxl if we remove players on stop
@@ -74,9 +79,9 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
             </CardActionArea>
             <CardActions sx={{justifyContent: "space-between"}}>
                 <Circle sx={{color: stateColor(status)}}> </Circle>
-                <Button onClick={(e) => openRoom(id)} startIcon={<OpenInBrowser/>}> Open </Button>
-                <Button onClick={(e) => startRoom(id)} startIcon={<PlayArrow/>}> Start </Button>
-                <Button onClick={(e) => stopRoom(id)} startIcon={<Close/>}> Close </Button>
+                <Button onClick={openRoom} startIcon={<OpenInBrowser/>}> Open </Button>
+                <Button onClick={startRoom} startIcon={<PlayArrow/>}> Start </Button>
+                <Button onClick={stopRoom} startIcon={<Close/>}> Close </Button>
                 <Button disabled sx={{marginLeft: "auto"}} startIcon={<AccessTime/>}> {formatTime(time)} </Button>
             </CardActions>
         </Card>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { getLectureToken } from '../utils/TokenHandler';
 
 interface tokenData {
     token: string
@@ -8,7 +9,11 @@ interface tokenData {
 
 export const usePost = (url: string, usrEmail?: string, usrPassword?: string) => {
 
-    let body = {}
+    let body = {
+        headers: {
+            'Authorization': "Bearer " + getLectureToken(),
+        }
+    }
     if (usrEmail && usrPassword) {
         body = {
             "email": usrEmail,

@@ -24,7 +24,7 @@ const Login = () => {
         setEmail(event.target.value)
     }
 
-    const {data, isLoading, isFetching, isError, error, refetch} = usePost("http://localhost:8080/api/v1/auth/authenticate", email, password)
+    const {refetch} = usePost("http://localhost:8080/api/v1/auth/authenticate", email, password)
 
     async function login (e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()

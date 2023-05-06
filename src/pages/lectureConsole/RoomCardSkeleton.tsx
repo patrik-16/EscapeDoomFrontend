@@ -3,12 +3,8 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import {AccessTime, Circle, Close, OpenInBrowser, PlayArrow} from "@mui/icons-material";
-import {CardActionArea, Icon, Skeleton, Stack} from "@mui/material";
-import {formatTime} from "../../utils/TimeFormatter";
-import {openEscapeRoom, startEscapeRoom, stopEscapeRoom} from '../../utils/ApiCallHandler';
+import {Skeleton} from "@mui/material";
 
 
 const SkeletonRoomCard = () => {
