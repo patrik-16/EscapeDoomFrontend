@@ -17,7 +17,7 @@ interface gameJoin {
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
-export const useGet = (url: string, needToken = false) => {
+export const useGet = (url: string, needToken = false, isEnabled = true) => {
 
     let headers = {}
 
@@ -33,6 +33,7 @@ export const useGet = (url: string, needToken = false) => {
             const { data } = await axios.get(url, { headers })
             return data as [escapeRoomData]
         },
+        enabled: isEnabled,
         staleTime: Infinity
     })
 };

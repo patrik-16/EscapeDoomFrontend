@@ -1,20 +1,19 @@
 import React, {useState} from 'react';
 import BackgroundImage from '../../assets/live-escape-game-1155620.jpg'
-import {Button, Card, CardContent, Grid, Stack, TextField, Typography} from "@mui/material";
+import {Alert, Button, Card, CardContent, Grid, Snackbar, Stack, TextField, Typography} from "@mui/material";
 import {common} from "@mui/material/colors";
-import Box from "@mui/material/Box";
-import {joinEscapeRoom} from "../../utils/ApiCallHandler";
 import { useNavigate } from 'react-router-dom';
-import { usePost } from '../../hooks/usePost';
 import { useGet } from '../../hooks/useGet';
+import { getSessionId, setSessionId } from '../../utils/GameSessionHandler';
 
 const StudentJoin = () => {
 
     const navigate = useNavigate()
-    const [roomPin, setRoomPin] = useState('')
-    const [playerName, setPlayerName] = useState('')
 
-    const { data, isLoading, isError, refetch } = useGet(`http://localhost:8090/api/join/${roomPin}`)
+    const [roomPin, setRoomPin] = useState('')
+    const [snackbar, setSnackbar] = useState(false)
+
+    const {refetch } = useGet(`http://localhost:8090/api/join/${roomPin}`, false, false)
 
     const handleUserInput = (e: any) => {
         setRoomPin(e.target.value)
@@ -22,16 +21,20 @@ const StudentJoin = () => {
 
     const sendID = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const response = (await refetch())
-        const responseData = response.data
-        console.log(responseData)
-        //@ts-expect-error
-        setPlayerName(responseData)
+        if (!getSessionId()) {
+            const response = (await refetch())
+            const responseData = response.data
 
-        //@ts-expect-error
-        if (responseData !== '') {
-            navigate(`/game-lobby/${roomPin}`)
+            if (response.isError) {
+                setSnackbar(true)
+            }
+
+            if (response.isSuccess) {
+                //@ts-ignore
+                setSessionId(responseData.sessionId)
+            }
         }
+        navigate(`/game-lobby/${roomPin}`)
     }
 
     return (
@@ -66,6 +69,12 @@ const StudentJoin = () => {
                     </CardContent>
                 </Card>
             </Grid>
+
+            <Snackbar open={snackbar} autoHideDuration={6000} onClose={() => setSnackbar(false)}>
+                <Alert onClose={() => setSnackbar(false)} severity="error" sx={{width: '100%'}}>
+                    The given lobby is either closed or doesn't exist
+                </Alert>
+            </Snackbar>
         </>
     );
 };

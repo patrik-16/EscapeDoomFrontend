@@ -5,6 +5,7 @@ const tokenString = 'token'
 export const getLectureToken = () => {
     return sessionStorage.getItem(tokenString)
 }
+
 export default function useToken() {
     const getToken = () => {
         return sessionStorage.getItem(tokenString)
