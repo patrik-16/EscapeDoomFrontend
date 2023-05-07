@@ -6,8 +6,7 @@ import { getLectureToken } from '../utils/TokenHandler';
 export const usePost = (url: string, usrEmail?: string, usrPassword?: string) => {
 
     let body = {}
-    let headers = {
-    }
+    let headers = {}
 
     if (usrEmail && usrPassword) {
         body = {

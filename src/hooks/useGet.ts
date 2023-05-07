@@ -11,21 +11,26 @@ interface escapeRoomData {
     userId: number
 }
 
+interface gameJoin {
+    playerName: string
+}
+
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
-export const useGet = () => {
+export const useGet = (url: string, needToken = false) => {
+
+    let headers = {}
+
+    if (needToken) {
+        //@ts-ignore
+        headers['Authorization'] = "Bearer " + getLectureToken()
+    }
+
     return useQuery({
         queryKey: ['getData'],
         retry: 1,
         queryFn: async () => {
-            await sleep(1000)
-            const { data } = await axios.get(
-                'http://localhost:8080/api/v1/portal-escape-room/getAll', {
-                headers: {
-                    'Authorization': "Bearer " + getLectureToken(),
-                }
-            }
-            )
+            const { data } = await axios.get(url, { headers })
             return data as [escapeRoomData]
         },
         staleTime: Infinity

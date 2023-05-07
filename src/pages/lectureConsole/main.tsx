@@ -14,7 +14,7 @@ const backgroundImages = [BackgroundImage1, BackgroundImage2]
 const LectureConsole = () => {
 
     const navigate = useNavigate()
-    const {data, isLoading, isError, error} = useGet()
+    const {data, isLoading, isError, error} = useGet('http://localhost:8080/api/v1/portal-escape-room/getAll', true)
 
     useEffect(() => {
         //@ts-ignore
