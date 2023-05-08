@@ -28,6 +28,10 @@ const GameLobby = () => {
             setUsers(parsedData.players)
         })
 
+        source.addEventListener("started", (e) => {
+            console.log("should navigate to escape room")
+        })
+
         return () => {
             source.close()
         }
