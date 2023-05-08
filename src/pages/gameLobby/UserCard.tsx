@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import {Typography} from "@mui/material";
 
 interface Props {
     playerName: string
@@ -6,12 +6,8 @@ interface Props {
 
 const UserCard = ({playerName}: Props) => {
     return (
-    <>
-    <Card>
-        <CardContent>
-            <Typography> {playerName} </Typography>
-        </CardContent>
-    </Card>
+    <>  
+        <Typography align="center" fontSize={24} fontWeight={"bold"}> {playerName} </Typography>
     </>
     );
 }

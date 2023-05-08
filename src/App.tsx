@@ -7,6 +7,7 @@ import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import Login from "./pages/login/main";
 import EscapeView from "./pages/escapeView/main";
 import GameLobby from './pages/gameLobby/main';
+import NoRoute from './pages/404/main';
 
 function App() {
 
@@ -25,7 +26,8 @@ function App() {
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/LectureConsole" element={<LectureConsole/>}/>
                     <Route path="/game-lobby/:lobbyID" element={<GameLobby/>}/>
-                    <Route path="/game-session" element={<EscapeView initialValue={"const a = 1"}/>}/>
+                    <Route path="/game-session/:lobbyID" element={<EscapeView initialValue={"const a = 1"}/>}/>
+                    <Route path="*" element={<NoRoute />}/>
                 </Routes>
             </ThemeProvider>
         </div>
