@@ -19,7 +19,7 @@ Installation:
 
 To start the Server:
 
-`vite`
+`npm run dev`
 
 ## Folder Structure
 

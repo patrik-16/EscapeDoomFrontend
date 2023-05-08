@@ -13,7 +13,7 @@ const StudentJoin = () => {
     const [roomPin, setRoomPin] = useState('')
     const [snackbar, setSnackbar] = useState(false)
 
-    const {refetch } = useGet(`http://localhost:8090/api/join/${roomPin}`, false, false)
+    const {refetch } = useGet(`${import.meta.env.VITE_GAME_BASE_URL}/join/${roomPin}`, false, false)
 
     const handleUserInput = (e: any) => {
         setRoomPin(e.target.value)

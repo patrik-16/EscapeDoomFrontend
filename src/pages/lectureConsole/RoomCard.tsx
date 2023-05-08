@@ -38,9 +38,9 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
     
     const handleClose = () => setOpen(false)
 
-    const openEscapeRoomCall = usePost(`http://localhost:8080/api/v1/portal-escape-room/openEscapeRoom/${id}`)
-    const startEscapeRoomCall = usePost(`http://localhost:8080/api/v1/portal-escape-room/startEscapeRoom/${id}`)
-    const stopEscapeRoomCall = usePost(`http://localhost:8080/api/v1/portal-escape-room/stopEscapeRoom/${id}`)
+    const openEscapeRoomCall = usePost(`${import.meta.env.VITE_LECTOR_BASE_URL}/portal-escape-room/openEscapeRoom/${id}`)
+    const startEscapeRoomCall = usePost(`${import.meta.env.VITE_LECTOR_BASE_URL}/portal-escape-room/startEscapeRoom/${id}`)
+    const stopEscapeRoomCall = usePost(`${import.meta.env.VITE_LECTOR_BASE_URL}/portal-escape-room/stopEscapeRoom/${id}`)
 
     //TODO: Make room calls into reusable function
     const openRoom = async () => {
