@@ -1,0 +1,66 @@
+{
+    "stage": {
+        "id": 69420,
+        "scenes": [
+            {
+                "id": 1,
+                "name": "startScene",
+                "bgImg": "img.url",
+                "nodes": [
+                    {
+                        "type": "console",
+                        "pos": {
+                            "x": 42,
+                            "y": 69
+                        },
+                        "nodeInfos": {
+                            "outputID": 1234,
+                            "codeSnipped": "System.out.println(\"Hello World\")"
+                        }
+                    },
+                    {
+                        "type": "details",
+                        "pos": {
+                            "x": 55,
+                            "y": 75
+                        },
+                        "nodeInfos": {
+                            "desc": "This is a details node :D",
+                            "png": "png.url",
+                            "title": "OwO"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "telephoneBooth",
+                "bgImg": "img.url",
+                "nodes": [
+                    {
+                        "type": "details",
+                        "pos": {
+                            "x": 55,
+                            "y": 75
+                        },
+                        "nodeInfos": {
+                            "desc": "This is a details node :D",
+                            "png": "png.url",
+                            "title": "OwO"
+                        }
+                    },
+                    {
+                        "type": "zoom",
+                        "pos": {
+                            "x": 55,
+                            "y": 75
+                        },
+                        "nodeInfos": {
+                            "sceneID": "<sceneID>"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
