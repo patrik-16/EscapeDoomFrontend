@@ -14,5 +14,13 @@ export default defineConfig(({ command, mode }) => {
     define: {
       __APP_ENV__: env.APP_ENV,
     },
+    server: {
+      watch: {
+        usePolling: true,
+      },
+      host: true, // needed for the Docker Container port mapping to work
+      strictPort: true,
+      port: 80, // you can replace this port with any port
+    }
   }
 })
