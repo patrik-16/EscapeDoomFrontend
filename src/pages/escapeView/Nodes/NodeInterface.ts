@@ -13,5 +13,5 @@ interface NodeInterface {
 
 interface NodeInstance {
     pos: { x: number, y: number }
-    nodeInfos: object
+    nodeInfos: any
 }

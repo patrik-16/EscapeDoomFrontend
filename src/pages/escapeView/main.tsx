@@ -39,9 +39,11 @@ const EscapeView = ({initialValue} : initialProps) => {
             <Box
                 sx={{
                     backgroundImage: `url(${PropEscapeRoom.escapeRoom.stage.scenes[0].bgImg})`,
-                    backgroundSize: 'cover'
+                    backgroundSize: "cover",
+                    backgroundRepeat: 'no-repeat'
                 }}
                 width={"100%"}
+                
             >
                 {
                     PropEscapeRoom.escapeRoom.stage.scenes[0].nodes.map((node, index) => (

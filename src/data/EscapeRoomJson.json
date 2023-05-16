@@ -17,7 +17,10 @@
                             },
                             "nodeInfos": {
                                 "outputID": 1234,
-                                "codeSnipped": "System.out.println(\"Hello World\")"
+                                "codeSnipped": "System.out.println(\"Hello World\")",
+                                "desc": "I can only try one combination at a time. Find the correct one!",
+                                "png": "png.url",
+                                "title": "INPUT"
                             }
                         },
                         {
