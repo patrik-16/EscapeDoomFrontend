@@ -1,6 +1,8 @@
 import React, {useRef, useState} from 'react';
 import Editor from '@monaco-editor/react';
-import {Stack} from "@mui/material";
+import {Box, Stack, Typography} from "@mui/material";
+import Node, { ZoomNode } from './Nodes/Node';
+import PropEscapeRoom from '../../data/EscapeRoomJson.json'
 
 interface initialProps {
     initialValue: string
@@ -34,6 +36,19 @@ const EscapeView = ({initialValue} : initialProps) => {
                     automaticLayout: true,
                 }}
             />
+            <Box
+                sx={{
+                    backgroundImage: `url(${PropEscapeRoom.escapeRoom.stage.scenes[0].bgImg})`,
+                    backgroundSize: 'cover'
+                }}
+                width={"100%"}
+            >
+                {
+                    PropEscapeRoom.escapeRoom.stage.scenes[0].nodes.map((node, index) => (
+                        <Node key={index} pos={node.pos} nodeInfos={node.nodeInfos} type={node.type as NodeType} />
+                    ))
+                }
+            </Box>
         </Stack>
     )
 };

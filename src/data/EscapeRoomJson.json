@@ -7,13 +7,13 @@
                 {
                     "id": 1,
                     "name": "startScene",
-                    "bgImg": "img.url",
+                    "bgImg": "https://www.noen.at/image/1920x1080-c-jpg/2282568/OPIC_007_%28C%29%20FH%20Campus%20Wien-David%20Bohmann%20%28Large%29.jpg",
                     "nodes": [
                         {
-                            "type": "console",
+                            "type": "Console",
                             "pos": {
-                                "x": 42,
-                                "y": 69
+                                "x": 250,
+                                "y": 125
                             },
                             "nodeInfos": {
                                 "outputID": 1234,
@@ -21,10 +21,33 @@
                             }
                         },
                         {
-                            "type": "details",
+                            "type": "Details",
                             "pos": {
-                                "x": 55,
-                                "y": 75
+                                "x": 250,
+                                "y": 125
+                            },
+                            "nodeInfos": {
+                                "desc": "This is a details node :D",
+                                "png": "png.url",
+                                "title": "OwO"
+                            }
+                        },
+                        {
+                            "type": "Data",
+                            "pos": {
+                                "x": 250,
+                                "y": 125
+                            },
+                            "nodeInfos": {
+                                "outputID": 1234,
+                                "codeSnipped": "System.out.println(\"Hello World\")"
+                            }
+                        },
+                        {
+                            "type": "Zoom",
+                            "pos": {
+                                "x": 250,
+                                "y": 125
                             },
                             "nodeInfos": {
                                 "desc": "This is a details node :D",
@@ -37,7 +60,7 @@
                 {
                     "id": 2,
                     "name": "telephoneBooth",
-                    "bgImg": "img.url",
+                    "bgImg": "https://magazin.fh-campuswien.ac.at/fileadmin/_processed_/3/4/csm_Teaser_Netzwerklabor_670x400_f53bcbd36d.jpg",
                     "nodes": [
                         {
                             "type": "details",
