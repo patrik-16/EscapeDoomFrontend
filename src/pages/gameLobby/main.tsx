@@ -17,20 +17,38 @@ const GameLobby = () => {
     const { lobbyID } = useParams()
 
     useEffect(() => {
+        //@ts-ignore
+        let interval;
+
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === "visible") {
+                interval = setInterval(() => {
+                    setCountDown((prevCountDown) => prevCountDown - 1);
+                }, 1000);
+            } else {
+                //@ts-ignore
+                clearInterval(interval);
+            }
+        };
+
         if (isStarted) {
-            const interval = setInterval(() => {
-                setCountDown(countDown - 1)
-            }, 1000)
+            document.addEventListener("visibilitychange", handleVisibilityChange);
+            handleVisibilityChange();
         }
 
-        if (countDown == 0) {
-            const sessionId = getSessionId()
-            setIsStarted(false)
-            setCountDown(5)
-            navigate(`/game-session/${sessionId}`)
+        if (countDown === 0) {
+            const sessionId = getSessionId();
+            setIsStarted(false);
+            setCountDown(5);
+            navigate(`/game-session/${sessionId}`);
         }
-    }, [countDown, isStarted])
 
+        return () => {
+            //@ts-ignore
+            clearInterval(interval);
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
+        };
+    }, [countDown, isStarted]);
     useEffect(() => {
         const sessionId = getSessionId()
         const url = `http://localhost:8090/api/join/lobby/${sessionId}`
