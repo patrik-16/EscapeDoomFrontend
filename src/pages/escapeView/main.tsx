@@ -65,7 +65,7 @@ const EscapeView = () => {
     useEffect(() => {
         if (!getStage.isFetching && !getStage.isError) {
             //@ts-ignore
-            setSceneInfo(getStage.data[0][0])
+            setSceneInfo(JSON.parse(getStage.data)[0])
         }
     }, [getStage.data])
 
