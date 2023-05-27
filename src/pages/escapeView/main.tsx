@@ -29,6 +29,7 @@ const EscapeView = () => {
         "playerSessionId": sessionID,
         "language": "Java",
         "code": code,
+        "codeRiddleID": 1,
         "dateTima": null
     })
 
@@ -58,6 +59,8 @@ const EscapeView = () => {
             "playerSessionId": sessionID,
             "language": language.charAt(0).toUpperCase() + language.slice(1),
             "code": value,
+            //@ts-ignore
+            "codeRiddleID":  sceneInfo.codeRiddleID,
             "dateTima": null
         })
     }
@@ -67,6 +70,9 @@ const EscapeView = () => {
             try {
                 //@ts-ignore
                 setSceneInfo(JSON.parse(getStage.data)[0])
+                //TODO NOT DYNAMIC
+                // @ts-ignore
+                setCode(JSON.parse(getStage.data)[0].nodes[0].nodeInfos.codeSnipped)
             }catch (e) {
                 window.location.reload()
             }
@@ -108,6 +114,7 @@ const EscapeView = () => {
                         height="100%"
                         width="30vw"
                         language={language}
+                        //@ts-ignore
                         value={code}
                         onMount={handleEditorDidMount}
                         onChange={handleEditorChange}
