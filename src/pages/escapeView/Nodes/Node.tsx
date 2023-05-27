@@ -38,6 +38,7 @@ export const NodeBuilder = (
 export const ConsoleNode = ({pos, nodeInfos}: NodeInstance) => {
     const [isOpen, setIsOpen] = useState(false)
 
+    //TODO: Extract Console and Data Node Popup Element as component
     return(
         <>
             <IconButton 
@@ -55,7 +56,6 @@ export const ConsoleNode = ({pos, nodeInfos}: NodeInstance) => {
                 }}>
                 <Settings fontSize='small' />
             </IconButton>
-            //TODO: Extract Console and Data Node Popup Element as component
             <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} open={isOpen} onClick={() => setIsOpen(false)}>
                 <Card sx={{ minWidth: 600 }}>
                     <Box 
