@@ -1,6 +1,6 @@
 import { Settings, Input, Search, Visibility, SettingsInputHdmi } from "@mui/icons-material";
 import { Backdrop, Box, Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogTitle, Divider, IconButton, List, ListItem, Stack, Typography } from "@mui/material";
-import { amber, blue, deepPurple } from "@mui/material/colors";
+import { amber, blue, deepPurple, grey } from "@mui/material/colors";
 import { useState } from "react";
 
 enum NodeType {
@@ -10,6 +10,7 @@ enum NodeType {
     Zoom
 }
 
+//TODO: Make this into IconButtonBuilder
 export const NodeBuilder = (
     {pos, nodeInfos}: NodeInstance, 
     iconElement: any, 
@@ -39,12 +40,11 @@ export const ConsoleNode = ({pos, nodeInfos}: NodeInstance) => {
 
     return(
         <>
-            {/* {NodeBuilder({pos, nodeInfos}, <Settings />, amber[600])} */}
             <IconButton 
-                size="small" 
-                color="warning"
+                size="small"
                 onClick={() => setIsOpen(true)} 
                 sx={{
+                    color: amber[600],
                     position: "relative",
                     left: pos.x,
                     top: pos.y,
@@ -55,6 +55,7 @@ export const ConsoleNode = ({pos, nodeInfos}: NodeInstance) => {
                 }}>
                 <Settings fontSize='small' />
             </IconButton>
+            //TODO: Extract Console and Data Node Popup Element as component
             <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} open={isOpen} onClick={() => setIsOpen(false)}>
                 <Card sx={{ minWidth: 600 }}>
                     <Box 
@@ -71,19 +72,16 @@ export const ConsoleNode = ({pos, nodeInfos}: NodeInstance) => {
                         </Typography>
                     </Box>
                     <CardContent>
-                        <Typography color={"gray"}> Object Description </Typography>
+                        <Typography color={"grey"}> Object Description </Typography>
                         <Typography mb={2}> {nodeInfos.desc} </Typography>
 
-                        <Typography fontWeight={"bold"} fontSize={14} mb={1}> Return </Typography>
-                        <Box display={"inline"} sx={{backgroundColor: amber[600]}}> 
-                            <Box component={"code"} color={"black"}> password</Box> 
+                        <Box sx={{backgroundColor: '#2c2c2c', p: 1, mb: 2}}>
+                            <Typography fontWeight={"bold"} fontSize={14} mb={1}> Return </Typography>
+                            <Typography> {nodeInfos.returnType} </Typography>
+                            <Divider sx={{flexGrow: 1, borderBottomWidth: 2, my: 2}} orientation="horizontal"/>
+                            <Typography fontWeight={"bold"} fontSize={14} mb={1}> Non-real example </Typography>
+                            <Typography> {nodeInfos.exampleInput} </Typography>
                         </Box>
-                        <Typography display={"inline"}>: A number</Typography>
-                        <Divider sx={{flexGrow: 1, borderBottomWidth: 2, my: 2}} orientation="horizontal"/>
-                        <Typography fontWeight={"bold"} fontSize={14} mb={1}> Non-real example </Typography>
-                        <ul>
-                            <li> 1234 </li>
-                        </ul>
                         <Stack direction={"row"} justifyContent={"end"}>
                             <Button sx={{backgroundColor: amber[600]}} variant="contained"> Connect </Button>
                         </Stack>
@@ -102,7 +100,9 @@ export const DataNode = ({pos, nodeInfos}: NodeInstance) => {
             <IconButton 
             size="small" 
             color="warning"
-            onClick={() => setIsOpen(true)}
+            onClick={() => {
+                setIsOpen(true)
+            }}
             sx={{
                 position: "relative",
                 left: pos.x,
@@ -112,19 +112,56 @@ export const DataNode = ({pos, nodeInfos}: NodeInstance) => {
                 border: 2, 
                 borderRadius: '50%'
             }}>
-                <Input sx={{fontSize: 12}} fontSize='small' />
+                <Input fontSize="small"/>
             </IconButton>
+            <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} open={isOpen} onClick={() => setIsOpen(false)}>
+                <Card sx={{ minWidth: 600 }}>
+                    <Box 
+                        sx={{backgroundColor: amber[600]}} 
+                        minHeight={50} 
+                        pl={2}
+                    >
+                        <Typography
+                            sx={{verticalAlign: "center"}} 
+                            color={"black"}
+                            fontWeight={"bold"}
+                        >
+                            {nodeInfos.title} 
+                        </Typography>
+                    </Box>
+                    <CardContent>
+                        <Typography color={"grey"}> Object output </Typography>
+                        <Typography mb={2}> {nodeInfos.desc} </Typography>
+
+                        <Box sx={{backgroundColor: '#2c2c2c', p: 1, mb: 2}}>
+                            <Typography fontWeight={"bold"} fontSize={14} mb={1}> Parameter </Typography>
+                            <Typography> {nodeInfos.parameterType} </Typography>
+                            <Divider sx={{flexGrow: 1, borderBottomWidth: 2, my: 2}} orientation="horizontal"/>
+                            <Typography fontWeight={"bold"} fontSize={14} mb={1}> Non-real example </Typography>
+                            <Typography> {nodeInfos.exampleOutput} </Typography>
+                        </Box>
+                        <Stack direction={"row"} justifyContent={"end"}>
+                            <Button sx={{backgroundColor: amber[600]}} variant="contained"> Connect </Button>
+                        </Stack>
+                    </CardContent>
+                </Card>
+            </Backdrop>
         </>
     )
 }
 
 export const DetailsNode = ({pos, nodeInfos}: NodeInstance) => {
+    const [isOpen, setIsOpen] = useState(false)
+
     return (
+        <>
+        
         <IconButton 
-            size="small" 
-            color="info" 
+            size="small"
+            onClick={() => {setIsOpen(true)}}
             sx={{
                 position: "relative",
+                color: blue[600],
                 left: pos.x,
                 top: pos.y,
                 width: 26,
@@ -133,7 +170,32 @@ export const DetailsNode = ({pos, nodeInfos}: NodeInstance) => {
                 borderRadius: '50%'
             }}>
             <Search fontSize='small' />
-    </IconButton>
+        </IconButton>
+    <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} open={isOpen} onClick={() => setIsOpen(false)}>
+        <Card sx={{ minWidth: 600 }}>
+            <Box 
+                sx={{backgroundColor: amber[600]}} 
+                minHeight={50} 
+                pl={2}
+            >
+                <Typography
+                    sx={{verticalAlign: "center"}} 
+                    color={"black"}
+                    fontWeight={"bold"}
+                >
+                    {nodeInfos.title} 
+                </Typography>
+            </Box>
+            <CardContent>
+                <Stack direction="row" height="400px" gap={2}>
+                    <Box width="80%" height="100%" 
+                    sx={{backgroundImage: `url(${nodeInfos.png})`, backgroundSize: "contain", backgroundRepeat: "no-repeat"}}/>
+                    <Typography mb={2}> {nodeInfos.desc} </Typography>
+                </Stack>
+            </CardContent>
+        </Card>
+    </Backdrop>
+    </>
     )
 }
 
@@ -159,13 +221,13 @@ export const ZoomNode = ({pos, nodeInfos}: NodeInstance) => {
 const renderNodeType = ({type, pos, nodeInfos}: NodeInterface) => {
     switch(type) {
         case "Console":
-            return ConsoleNode({pos, nodeInfos}) //NodeBuilder({pos, nodeInfos}, <Settings/>, amber[600])
+            return ConsoleNode({pos, nodeInfos})
         case "Data":
-            return NodeBuilder({pos, nodeInfos}, <SettingsInputHdmi/>, amber[800])
+            return DataNode({pos, nodeInfos})
         case "Details":
-            return NodeBuilder({pos, nodeInfos}, <Search/>, blue[600])
-        case "Zoom": Visibility
-            return NodeBuilder({pos, nodeInfos}, <Visibility/>, deepPurple[400])
+            return DetailsNode({pos, nodeInfos})
+        case "Zoom":
+            return ZoomNode({pos, nodeInfos})
         default:
             console.error(`Invalid Node Type: ${type}`)
             return <></>
@@ -173,7 +235,6 @@ const renderNodeType = ({type, pos, nodeInfos}: NodeInterface) => {
 }
 
 const Node = ({type, pos, nodeInfos}: NodeInterface) => {
-    // console.log(type, pos, nodeInfos)
     return (
         renderNodeType({type, pos, nodeInfos})
     );

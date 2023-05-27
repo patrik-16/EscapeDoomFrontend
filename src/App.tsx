@@ -29,7 +29,7 @@ function App() {
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/LectureConsole" element={<LectureConsole/>}/>
                     <Route path="/game-lobby/:lobbyID" element={<GameLobby/>}/>
-                    <Route path="/game-session/:lobbyID" element={<EscapeView initialValue={"const a = 1"}/>}/>
+                    <Route path="/game-session/:lobbyID" element={<EscapeView />}/>
                     <Route path="*" element={<NoRoute />}/>
                 </Routes>
             </ThemeProvider>
