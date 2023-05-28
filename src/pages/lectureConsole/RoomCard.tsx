@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {AccessTime, Circle, Close, OpenInBrowser, PlayArrow, Share} from "@mui/icons-material";
 import {Alert, CardActionArea, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack} from "@mui/material";
-import {formatTime} from "../../utils/TimeFormatter";
 import { usePost } from '../../hooks/usePost';
 
 interface Props {
