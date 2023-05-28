@@ -22,19 +22,42 @@ const StudentJoin = () => {
     const sendID = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!getSessionId()) {
-            const response = (await refetch())
-            const responseData = response.data
+            const response = (await refetch());
+            const responseData = response.data;
 
             if (response.isError) {
-                setSnackbar(true)
+                setSnackbar(true);
             }
-
             if (response.isSuccess) {
+                console.log("in succes ")
+                const sessionId = getSessionId();
                 //@ts-ignore
-                setSessionId(responseData.sessionId)
+                switch (responseData.state) {
+                    case "PLAYING" :
+                        console.log("In Playing")
+                        //@ts-ignore
+                        setSessionId(responseData.sessionId);
+                        //@ts-ignore
+                        navigate(`/game-session/${responseData.sessionId}`);
+                        break;
+                    case "STOPPED":
+                        console.log("is Stopped")
+                        navigate("/")
+                        setSnackbar(true)
+                        break
+                    case "JOINABLE":
+                        console.log("in Joinable")
+                        navigate(`/game-lobby/${roomPin}`)
+                        //@ts-ignore
+                        setSessionId(responseData.sessionId)
+                        break
+                }
             }
+        } else {
+            const sessionId = getSessionId()
+            navigate(`/game-session/${sessionId}`);
         }
-        navigate(`/game-lobby/${roomPin}`)
+
     }
 
     return (

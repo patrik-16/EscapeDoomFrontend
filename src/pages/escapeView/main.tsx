@@ -95,9 +95,18 @@ const EscapeView = () => {
 
     useEffect(() => {
         if (!getStage.isFetching && !getStage.isError) {
+            console.log(getStage.data)
             try {
                 //@ts-ignore
-                setSceneInfo(JSON.parse(getStage.data)[0])
+                switch (getStage.data.state) {
+                    case "PLAYING":
+                        //@ts-ignore
+                        setSceneInfo(JSON.parse(getStage.data.stage[0])[0])
+                        break
+                    case "STOPPED":
+                        //TODO INFORM USER OF SESSION NOT avalibe
+                        navigate("/")
+                }
             }catch (e) {
                 window.location.reload()
             }
