@@ -10,11 +10,21 @@ import { submitCode } from '../../hooks/submitCode';
 import { getCode } from '../../hooks/getCode';
 import LoadingButton from '@mui/lab/LoadingButton';
 import type {} from '@mui/lab/themeAugmentation';
+import { useNavigate } from 'react-router-dom';
+
+enum compileStatus {
+    ERROR = "ERROR",
+    COMPILED = "COMPILED",
+    SUCCESS = "SUCCESS",
+    WAITING = "WAITING",
+    WON = "WON",
+    BADREQUEST = "BADREQUEST"
+}
 
 const EscapeView = () => {
 
+    const navigate = useNavigate()
     const waiting : string = "WAITING"
-
     const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
     const [code, setCode] = useState(`private static int solve() {
@@ -27,7 +37,7 @@ const EscapeView = () => {
     const [sceneInfo, setSceneInfo] = useState(Object)
     const [codeExecResponse, setCodeExecResponse] = useState({
         "status" : "",
-        "output" :""
+        "output" : ""
     })
 
     const [submitCodeBody, setSubmitCodeBody] = useState({
@@ -50,7 +60,20 @@ const EscapeView = () => {
             await sleep(500)
             respo = await getCodeCall.refetch()
         }
-        //TODO CCHECK FOR STATUS SUCCESS and WON
+
+        //TODO: Create ENUM for status
+        switch (respo.data.status) {
+            case compileStatus.SUCCESS: {
+                //TODO: Make Node for reload visible ;)
+                window.location.reload()
+                break
+            }
+            case compileStatus.WON: {
+                navigate('/leaderboard')
+                break
+            }
+        }
+        
         setCodeExecResponse(respo.data)
     }
 

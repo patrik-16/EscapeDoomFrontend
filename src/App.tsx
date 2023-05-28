@@ -8,6 +8,7 @@ import Login from "./pages/login/main";
 import EscapeView from "./pages/escapeView/main";
 import GameLobby from './pages/gameLobby/main';
 import NoRoute from './pages/404/main';
+import EscapeLeaderboard from './pages/leaderboard/main';
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
                     <Route path="/LectureConsole" element={<LectureConsole/>}/>
                     <Route path="/game-lobby/:lobbyID" element={<GameLobby/>}/>
                     <Route path="/game-session/:lobbyID" element={<EscapeView />}/>
+                    <Route path="/leaderboard" element={<EscapeLeaderboard />}/>
                     <Route path="*" element={<NoRoute />}/>
                 </Routes>
             </ThemeProvider>
