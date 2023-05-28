@@ -34,19 +34,16 @@ const StudentJoin = () => {
                 //@ts-ignore
                 switch (responseData.state) {
                     case "PLAYING" :
-                        console.log("In Playing")
                         //@ts-ignore
                         setSessionId(responseData.sessionId);
                         //@ts-ignore
                         navigate(`/game-session/${responseData.sessionId}`);
                         break;
                     case "STOPPED":
-                        console.log("is Stopped")
-                        navigate("/")
+                        // navigate("/")
                         setSnackbar(true)
                         break
                     case "JOINABLE":
-                        console.log("in Joinable")
                         navigate(`/game-lobby/${roomPin}`)
                         //@ts-ignore
                         setSessionId(responseData.sessionId)

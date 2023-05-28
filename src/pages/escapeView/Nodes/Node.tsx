@@ -201,7 +201,8 @@ export const DetailsNode = ({pos, nodeInfos}: NodeInstance) => {
 export const ZoomNode = ({pos, nodeInfos}: NodeInstance) => {
     return (
         <IconButton 
-            size="small" 
+            size="small"
+            onClick={() => {window.location.reload()}}
             sx={{
                 position: "relative",
                 left: pos.x,

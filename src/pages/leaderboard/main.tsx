@@ -30,7 +30,7 @@ const EscapeLeaderboard = () => {
           <LeaderboardHeaders />
           {
             // This sorts by points first, and if points are equal, sort by timestamp
-            playerScores.data ? playerScores.data.sort((a, b) => a.score < b.score ? 1 : (a.score > b.score) ? -1 : (a.time > b.time) ? 1 : -1).map((user, index: number) => (
+            playerScores.data ? playerScores.data.slice(0, 10).sort((a, b) => a.score < b.score ? 1 : (a.score > b.score) ? -1 : (a.time > b.time) ? 1 : -1).map((user, index: number) => (
               <RankingEntry key={index} rank={index} name={user.playerName} points={user.score} time={user.time/*user.timeStamp*/}/>
             )) : <></>
           }

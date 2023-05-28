@@ -10,7 +10,8 @@ import { submitCode } from '../../hooks/submitCode';
 import { getCode } from '../../hooks/getCode';
 import LoadingButton from '@mui/lab/LoadingButton';
 import type {} from '@mui/lab/themeAugmentation';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { green } from '@mui/material/colors';
 
 enum compileStatus {
     ERROR = "ERROR",
@@ -61,11 +62,10 @@ const EscapeView = () => {
             respo = await getCodeCall.refetch()
         }
 
-        //TODO: Create ENUM for status
         switch (respo.data.status) {
             case compileStatus.SUCCESS: {
                 //TODO: Make Node for reload visible ;)
-                window.location.reload()
+                // window.location.reload()
                 break
             }
             case compileStatus.WON: {
@@ -73,7 +73,7 @@ const EscapeView = () => {
                 break
             }
         }
-        
+        console.log(respo.data)
         setCodeExecResponse(respo.data)
     }
 
@@ -107,7 +107,7 @@ const EscapeView = () => {
                         //TODO INFORM USER OF SESSION NOT avalibe
                         navigate("/")
                 }
-            }catch (e) {
+            } catch (e) {
                 window.location.reload()
             }
         }
@@ -184,9 +184,27 @@ const EscapeView = () => {
                     </Stack>
                 </EditorContainer>
                 <EditorContainer sx={{marginBottom: 1, height: "112px", maxHeight: "112px", overflow: "auto"}}>
-                    <Stack direction="column"> 
-                        <Typography> Console Output </Typography>
-                        <Typography> {codeExecResponse.output} </Typography>
+                    <Stack direction="column">
+                        { codeExecResponse.status === compileStatus.SUCCESS ?
+                            <Box sx={{backgroundColor: green[300]}} p={1}>
+                                <Typography color={green[900]}> Success! </Typography>
+                                <Typography color={green[900]}> You solved this riddle, continue to the next one ? </Typography>
+                                <Button sx={{color: green[900], fontWeight: 'bold'}} onClick={() => window.location.reload()}> Take me there </Button>
+                            </Box>
+                            :
+                            <></>
+                        }
+                        <Box>
+                            <Typography> Console Output </Typography>
+                        </Box>
+                        <Box overflow={"auto"}>
+                            <Typography fontSize={"0.9rem"} fontWeight={"bold"} color={codeExecResponse.status === compileStatus.ERROR ? '#f00' : '#fff'}> 
+                                {
+                                    codeExecResponse.status === compileStatus.ERROR ? 'Error Msg' : 'Output'
+                                } 
+                            </Typography>
+                            <Typography> {'> '}{codeExecResponse.output} </Typography>
+                        </Box>
                     </Stack>
                 </EditorContainer>
             </Stack>
