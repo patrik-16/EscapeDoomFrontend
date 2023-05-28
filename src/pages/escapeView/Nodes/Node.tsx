@@ -35,9 +35,8 @@ export const NodeBuilder = (
     )
 }
 
-export const ConsoleNode = ({pos, nodeInfos}: NodeInstance) => {
+export const ConsoleNode = ({pos, nodeInfos}: NodeInstance, codeSetter: React.Dispatch<React.SetStateAction<string>>) => {
     const [isOpen, setIsOpen] = useState(false)
-
     //TODO: Extract Console and Data Node Popup Element as component
     return(
         <>
@@ -83,7 +82,7 @@ export const ConsoleNode = ({pos, nodeInfos}: NodeInstance) => {
                             <Typography> {nodeInfos.exampleInput} </Typography>
                         </Box>
                         <Stack direction={"row"} justifyContent={"end"}>
-                            <Button sx={{backgroundColor: amber[600]}} variant="contained"> Connect </Button>
+                            <Button sx={{backgroundColor: amber[600]}} variant="contained" onClick={() => {codeSetter(nodeInfos.codeSnipped)}}> Connect </Button>
                         </Stack>
                     </CardContent>
                 </Card>
@@ -218,10 +217,10 @@ export const ZoomNode = ({pos, nodeInfos}: NodeInstance) => {
     )
 }
 
-const renderNodeType = ({type, pos, nodeInfos}: NodeInterface) => {
+const renderNodeType = ({type, pos, nodeInfos, codeSetter}: NodeInterface) => {
     switch(type) {
         case "Console":
-            return ConsoleNode({pos, nodeInfos})
+            return ConsoleNode({pos, nodeInfos}, codeSetter)
         case "Data":
             return DataNode({pos, nodeInfos})
         case "Details":
@@ -234,9 +233,9 @@ const renderNodeType = ({type, pos, nodeInfos}: NodeInterface) => {
     }
 }
 
-const Node = ({type, pos, nodeInfos}: NodeInterface) => {
+const Node: React.FC<NodeInterface> = ({type, pos, nodeInfos, codeSetter}: NodeInterface) => {
     return (
-        renderNodeType({type, pos, nodeInfos})
+        renderNodeType({type, pos, nodeInfos, codeSetter})
     );
 }
  

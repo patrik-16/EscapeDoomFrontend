@@ -33,6 +33,8 @@ const EscapeView = () => {
         "dateTima": null
     })
 
+
+
     const getStage = useGet(`${import.meta.env.VITE_GAME_BASE_URL}/join/getStage/${sessionID}`)
     const submitCodeCall = submitCode(`${import.meta.env.VITE_GAME_BASE_URL}/join/submitCode`, submitCodeBody)
     //@ts-ignore
@@ -45,7 +47,6 @@ const EscapeView = () => {
             await sleep(500)
             respo = await getCodeCall.refetch()
         }
-        console.log(respo.data)
         setCodeExecResponse(respo.data)
     }
 
@@ -70,9 +71,6 @@ const EscapeView = () => {
             try {
                 //@ts-ignore
                 setSceneInfo(JSON.parse(getStage.data)[0])
-                //TODO NOT DYNAMIC
-                // @ts-ignore
-                setCode(JSON.parse(getStage.data)[0].nodes[0].nodeInfos.codeSnipped)
             }catch (e) {
                 window.location.reload()
             }
@@ -91,7 +89,7 @@ const EscapeView = () => {
 
     return (
         <Stack direction="row" alignItems="center" height="100vh">
-            <Stack direction="column" height="100vh">
+            <Stack direction="column" height="100vh" maxWidth={"31.5vw"}>
                 <EditorContainer>
                     <Stack direction="row" alignItems="center">
                         <Typography mx={2}> Code </Typography>
@@ -149,7 +147,7 @@ const EscapeView = () => {
                         </LoadingButton>
                     </Stack>
                 </EditorContainer>
-                <EditorContainer sx={{marginBottom: 1}}>
+                <EditorContainer sx={{marginBottom: 1, height: "112px", maxHeight: "112px", overflow: "auto"}}>
                     <Stack direction="column"> 
                         <Typography> Console Output </Typography>
                         <Typography> {codeExecResponse} </Typography>
@@ -169,7 +167,7 @@ const EscapeView = () => {
             >
                 {
                     sceneInfo.nodes ? (sceneInfo.nodes.map((node: NodeInterface, index: number) => ( 
-                        <Node key={index} pos={node.pos} nodeInfos={node.nodeInfos} type={node.type as NodeType} />
+                        <Node key={index} pos={node.pos} nodeInfos={node.nodeInfos} type={node.type as NodeType} codeSetter={setCode} />
                     ))) : <></>
                 }
             </Box>

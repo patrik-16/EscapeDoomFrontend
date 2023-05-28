@@ -27,7 +27,6 @@ export const usePost = (url: string, usrEmail?: string, usrPassword?: string) =>
         enabled: false,
         retry: false,
         onSuccess(data) {
-            console.log(data)
         },
         onError(err) {
 

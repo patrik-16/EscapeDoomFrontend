@@ -6,7 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {AccessTime, Circle, Close, OpenInBrowser, PlayArrow, Share} from "@mui/icons-material";
-import {Alert, CardActionArea, Snackbar} from "@mui/material";
+import {Alert, CardActionArea, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack} from "@mui/material";
 import {formatTime} from "../../utils/TimeFormatter";
 import { usePost } from '../../hooks/usePost';
 
@@ -32,17 +32,15 @@ const stateColor = (escapeRoomState: string) => {
 
 const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
 
-    //TODO CHANGE TO TIMER INPUT
-    const fixedTime : number = 90;
-
     const [status, setStatus] = useState(escapeRoomState)
     const [open, setOpen] = useState(false)
     const [lobbyID, setLobbyID] = useState(0)
+    const [escapeRoomTime, setEscapeRoomTime] = useState(time)
     
     const handleClose = () => setOpen(false)
 
     const openEscapeRoomCall = usePost(`${import.meta.env.VITE_LECTOR_BASE_URL}/portal-escape-room/openEscapeRoom/${id}`)
-    const startEscapeRoomCall = usePost(`${import.meta.env.VITE_LECTOR_BASE_URL}/portal-escape-room/startEscapeRoom/${id}/${fixedTime}`)
+    const startEscapeRoomCall = usePost(`${import.meta.env.VITE_LECTOR_BASE_URL}/portal-escape-room/startEscapeRoom/${id}/${escapeRoomTime}`)
     const stopEscapeRoomCall = usePost(`${import.meta.env.VITE_LECTOR_BASE_URL}/portal-escape-room/stopEscapeRoom/${id}`)
 
     //TODO: Make room calls into reusable function
@@ -50,7 +48,6 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
         const refetchResponse = (await openEscapeRoomCall.refetch())
         if (!refetchResponse.isError) {
             setLobbyID(refetchResponse.data)
-            console.log(refetchResponse)
             setStatus('JOINABLE')
         } else {
             setOpen(true)
@@ -60,7 +57,6 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
     const startRoom = async () => {
         const refetchResponse = (await startEscapeRoomCall.refetch())
         if (!refetchResponse.isError) {
-            console.log(refetchResponse)
             setStatus('PLAYING')
         } else {
             setOpen(true)
@@ -70,7 +66,6 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
     const stopRoom = async () => {
         const refetchResponse = (await stopEscapeRoomCall.refetch())
         if (!refetchResponse.isError) {
-            console.log(refetchResponse)
             setLobbyID(0)
             setStatus('STOPPED')
         } else {
@@ -99,13 +94,28 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
                     </Typography>
                     : ''
                 }
+                
             </CardContent>
             <CardActions sx={{justifyContent: "space-between"}}>
                 <Circle sx={{color: stateColor(status)}}> </Circle>
                 <Button onClick={openRoom} startIcon={<OpenInBrowser/>}> Open </Button>
                 <Button onClick={startRoom} startIcon={<PlayArrow/>}> Start </Button>
                 <Button onClick={stopRoom} startIcon={<Close/>}> Close </Button>
-                <Button disabled sx={{marginLeft: "auto"}} startIcon={<AccessTime/>}> {formatTime(time)} </Button>
+                <Stack direction="row" alignItems={"center"} gap={.5}>
+                    <AccessTime/>
+                    <FormControl>
+                        <Select
+                            value={escapeRoomTime}
+                            variant="standard"
+                            onChange={(event) => {setEscapeRoomTime(event.target.value as number)}}
+                        >
+                            <MenuItem value={30}>30 min</MenuItem>
+                            <MenuItem value={60}>1h</MenuItem>
+                            <MenuItem value={90}>1h 30min</MenuItem>
+                            <MenuItem value={120}>2h</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Stack>
             </CardActions>
 
             {/* Snackbars */}
