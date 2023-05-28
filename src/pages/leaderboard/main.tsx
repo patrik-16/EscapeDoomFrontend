@@ -1,6 +1,9 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { formatDate } from "../../utils/TimeFormatter";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { useGet } from "../../hooks/useGet";
+import { getLeaderboardScores } from "../../hooks/fetchLeaderboard";
 
 interface usrProps {
   rank: number,
@@ -9,21 +12,17 @@ interface usrProps {
   timestamp: Date
 }
 
-const userRanking = (name: string, points: number, timestamp: Date) => {
-    return {name, points, timestamp}
-}
 const headers = ["#", "Name", "Points", "Timestamp"]
 
 const date = new Date("2023-05-28T15:00:00")
 const date2 = new Date(Date.parse("2023-05-28T16:00:00"))
 
-const testEntries = [
-  {name: "Maxl", points: 420, timeStamp: date},
-  {name: "Schmomi", points: 69, timeStamp: date},
-  {name: "Paxi", points: 69, timeStamp: date2}
-]
-
 const EscapeLeaderboard = () => {
+
+    const location = useLocation();
+    const roomID = location.pathname.split("/").at(-1)
+    const playerScores = getLeaderboardScores(`${import.meta.env.VITE_GAME_BASE_URL}/leaderboard/${roomID}`)
+
     return (
       <Stack alignItems={"center"} mt={5} >
         <Box width={"90%"} maxWidth={"900px"}>
@@ -31,9 +30,9 @@ const EscapeLeaderboard = () => {
           <LeaderboardHeaders />
           {
             // This sorts by points first, and if points are equal, sort by timestamp
-            testEntries.sort((a, b) => a.points < b.points ? 1 : (a.points > b.points) ? -1 : (a.timeStamp > b.timeStamp) ? 1 : -1).map((user, index: number) => (
-              <RankingEntry rank={index} name={user.name} points={user.points} timestamp={user.timeStamp}/>
-            ))
+            playerScores.data ? playerScores.data.sort((a, b) => a.score < b.score ? 1 : (a.score > b.score) ? -1 : 0/*(a.timeStamp > b.timeStamp) ? 1 : -1*/).map((user, index: number) => (
+              <RankingEntry key={index} rank={index} name={user.playerName} points={user.score} timestamp={date/*user.timeStamp*/}/>
+            )) : <></>
           }
         </Box>
       </Stack>
@@ -53,8 +52,8 @@ const LeaderboardHeaders = () => {
     <Box width={"100%"} sx={{backgroundColor: '#fff'}}>
         <Stack ml={1} direction="row" height={"40px"} alignItems={"center"} p={1}>
           {
-            headers.map(header => (
-              <Typography fontWeight={"bold"} fontSize={24} color={'#000'} width={"100%"}> {header} </Typography>
+            headers.map((header, index) => (
+              <Typography key={index} fontWeight={"bold"} fontSize={24} color={'#000'} width={"100%"}> {header} </Typography>
             ))
           }
         </Stack>

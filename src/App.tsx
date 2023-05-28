@@ -31,7 +31,7 @@ function App() {
                     <Route path="/LectureConsole" element={<LectureConsole/>}/>
                     <Route path="/game-lobby/:lobbyID" element={<GameLobby/>}/>
                     <Route path="/game-session/:lobbyID" element={<EscapeView />}/>
-                    <Route path="/leaderboard" element={<EscapeLeaderboard />}/>
+                    <Route path="/leaderboard/:lobbyID" element={<EscapeLeaderboard />}/>
                     <Route path="*" element={<NoRoute />}/>
                 </Routes>
             </ThemeProvider>

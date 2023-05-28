@@ -13,7 +13,7 @@ const StudentJoin = () => {
     const [roomPin, setRoomPin] = useState('')
     const [snackbar, setSnackbar] = useState(false)
 
-    const {refetch } = useGet(`${import.meta.env.VITE_GAME_BASE_URL}/join/${roomPin}`, false, false)
+    const {refetch} = useGet(`${import.meta.env.VITE_GAME_BASE_URL}/join/${roomPin}`, false, false)
 
     const handleUserInput = (e: any) => {
         setRoomPin(e.target.value)
@@ -29,7 +29,7 @@ const StudentJoin = () => {
                 setSnackbar(true);
             }
             if (response.isSuccess) {
-                console.log("in succes ")
+                console.log("in success")
                 const sessionId = getSessionId();
                 //@ts-ignore
                 switch (responseData.state) {
