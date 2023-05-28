@@ -32,6 +32,9 @@ const stateColor = (escapeRoomState: string) => {
 
 const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
 
+    //TODO CHANGE TO TIMER INPUT
+    const fixedTime : number = 90;
+
     const [status, setStatus] = useState(escapeRoomState)
     const [open, setOpen] = useState(false)
     const [lobbyID, setLobbyID] = useState(0)
@@ -39,7 +42,7 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
     const handleClose = () => setOpen(false)
 
     const openEscapeRoomCall = usePost(`${import.meta.env.VITE_LECTOR_BASE_URL}/portal-escape-room/openEscapeRoom/${id}`)
-    const startEscapeRoomCall = usePost(`${import.meta.env.VITE_LECTOR_BASE_URL}/portal-escape-room/startEscapeRoom/${id}`)
+    const startEscapeRoomCall = usePost(`${import.meta.env.VITE_LECTOR_BASE_URL}/portal-escape-room/startEscapeRoom/${id}/${fixedTime}`)
     const stopEscapeRoomCall = usePost(`${import.meta.env.VITE_LECTOR_BASE_URL}/portal-escape-room/stopEscapeRoom/${id}`)
 
     //TODO: Make room calls into reusable function
