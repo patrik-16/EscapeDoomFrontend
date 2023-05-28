@@ -13,6 +13,8 @@ import type {} from '@mui/lab/themeAugmentation';
 
 const EscapeView = () => {
 
+    const waiting : string = "WAITING"
+
     const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
     const [code, setCode] = useState(`private static int solve() {
@@ -23,7 +25,10 @@ const EscapeView = () => {
     const [language, setLangauge] = useState('java')
     const sessionID = getSessionId()
     const [sceneInfo, setSceneInfo] = useState(Object)
-    const [codeExecResponse, setCodeExecResponse] = useState("")
+    const [codeExecResponse, setCodeExecResponse] = useState({
+        "status" : "",
+        "output" :""
+    })
 
     const [submitCodeBody, setSubmitCodeBody] = useState({
         "playerSessionId": sessionID,
@@ -33,8 +38,6 @@ const EscapeView = () => {
         "dateTima": null
     })
 
-
-
     const getStage = useGet(`${import.meta.env.VITE_GAME_BASE_URL}/join/getStage/${sessionID}`)
     const submitCodeCall = submitCode(`${import.meta.env.VITE_GAME_BASE_URL}/join/submitCode`, submitCodeBody)
     //@ts-ignore
@@ -43,10 +46,11 @@ const EscapeView = () => {
     const handleCodeSubmission = async () => {
         await submitCodeCall.refetch()
         let respo = await getCodeCall.refetch()
-        while(respo.data === "waiting") {
+        while(respo.data.status === waiting) {
             await sleep(500)
             respo = await getCodeCall.refetch()
         }
+        //TODO CCHECK FOR STATUS SUCCESS and WON
         setCodeExecResponse(respo.data)
     }
 
@@ -139,7 +143,7 @@ const EscapeView = () => {
                             }}
                             startIcon={<PlayArrow/>} 
                             variant='contained' 
-                            loading={getCodeCall.data === "waiting"}
+                            loading={getCodeCall.data?.status === waiting}
                             loadingPosition="start"
                             onClick={handleCodeSubmission}
                         >
@@ -150,7 +154,7 @@ const EscapeView = () => {
                 <EditorContainer sx={{marginBottom: 1, height: "112px", maxHeight: "112px", overflow: "auto"}}>
                     <Stack direction="column"> 
                         <Typography> Console Output </Typography>
-                        <Typography> {codeExecResponse} </Typography>
+                        <Typography> {codeExecResponse.output} </Typography>
                     </Stack>
                 </EditorContainer>
             </Stack>
