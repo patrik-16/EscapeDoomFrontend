@@ -9,7 +9,7 @@ interface usrProps {
   rank: number,
   name: string,
   points: number,
-  timestamp: Date
+  time: number
 }
 
 const headers = ["#", "Name", "Points", "Timestamp"]
@@ -30,8 +30,8 @@ const EscapeLeaderboard = () => {
           <LeaderboardHeaders />
           {
             // This sorts by points first, and if points are equal, sort by timestamp
-            playerScores.data ? playerScores.data.sort((a, b) => a.score < b.score ? 1 : (a.score > b.score) ? -1 : 0/*(a.timeStamp > b.timeStamp) ? 1 : -1*/).map((user, index: number) => (
-              <RankingEntry key={index} rank={index} name={user.playerName} points={user.score} timestamp={date/*user.timeStamp*/}/>
+            playerScores.data ? playerScores.data.sort((a, b) => a.score < b.score ? 1 : (a.score > b.score) ? -1 : (a.time > b.time) ? 1 : -1).map((user, index: number) => (
+              <RankingEntry key={index} rank={index} name={user.playerName} points={user.score} time={user.time/*user.timeStamp*/}/>
             )) : <></>
           }
         </Box>
@@ -61,14 +61,14 @@ const LeaderboardHeaders = () => {
   )
 }
 
-const RankingEntry: React.FC<usrProps> = ({rank, name, points, timestamp}: usrProps) => {
+const RankingEntry: React.FC<usrProps> = ({rank, name, points, time}: usrProps) => {
   return (
     <Box width={"100%"}>
         <Stack direction="row" height={"60px"} alignItems={"center"} p={1}>
             <Typography fontSize={30} width={"100%"} ml={1}> {rank + 1}. </Typography>
             <Typography noWrap sx={{textOverflow: 'ellipsis'}} fontSize={24} width={"100%"}> {name} </Typography>
             <Typography fontSize={24} width={"100%"}> {points} </Typography>
-            <Typography fontSize={24} width={"100%"}> { formatDate(timestamp) } </Typography>
+            <Typography fontSize={24} width={"100%"}> { formatDate(time) } </Typography>
         </Stack>
     </Box>
   )

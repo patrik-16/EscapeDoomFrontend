@@ -3,6 +3,9 @@ export const formatTime = (time: number) => {
     return Math.floor(time / 60).toString().padStart(2, '0') + ":" + (time % 60).toString().padStart(2, '0') + "h"
 }
 
-export const formatDate = (date: Date): string => {
-    return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+export const formatDate = (time: number): string => {
+    const hours: string = Math.floor(time / (60 * 60)).toString().padStart(2, '0')
+    const minutes: string = Math.floor(time / 60).toString().padStart(2, '0')
+    const seconds: string = (time % 60).toString().padStart(2, '0')
+    return `${hours}:${minutes}:${seconds}`
 }

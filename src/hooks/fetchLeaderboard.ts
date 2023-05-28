@@ -5,7 +5,8 @@ const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
 interface leaderboardScores {
     score: number,
-    playerName: string
+    playerName: string,
+    time: number
 }
 
 export const getLeaderboardScores = (url: string) => {
