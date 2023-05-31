@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import Editor from '@monaco-editor/react';
 import {Box, Button, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Typography, createTheme} from "@mui/material";
 import Node from './Nodes/Node';
-import { getSessionId } from '../../utils/GameSessionHandler';
+import {getSessionId, removeSessionId} from '../../utils/GameSessionHandler';
 import { useGet } from '../../hooks/useGet';
 import { PlayArrow } from '@mui/icons-material';
 import EditorContainer from './EditorContainer';
@@ -73,7 +73,6 @@ const EscapeView = () => {
                 break
             }
         }
-        console.log(respo.data)
         setCodeExecResponse(respo.data)
     }
 
@@ -95,17 +94,31 @@ const EscapeView = () => {
 
     useEffect(() => {
         if (!getStage.isFetching && !getStage.isError) {
-            console.log(getStage.data)
+            if (getStage.data === undefined || getStage.data == null) {
+                window.location.reload()
+            }
             try {
                 //@ts-ignore
                 switch (getStage.data.state) {
                     case "PLAYING":
                         //@ts-ignore
-                        setSceneInfo(JSON.parse(getStage.data.stage[0])[0])
-                        break
+                        setSceneInfo(JSON.parse(getStage.data.stage[0])[0]);
+                        break;
                     case "STOPPED":
+                        removeSessionId();
                         //TODO INFORM USER OF SESSION NOT avalibe
-                        navigate("/")
+                        navigate("/");
+                        break;
+                    case "JOINABLE":
+                        //@ts-ignore
+                        //@ts-ignore
+                        if (getStage.data.roomID !== null) {
+                            //@ts-ignore
+                            navigate(`/game-lobby/${getStage.data.roomID}`);
+                        } else {
+                            navigate("/")
+                        }
+                        break;
                 }
             } catch (e) {
                 window.location.reload()

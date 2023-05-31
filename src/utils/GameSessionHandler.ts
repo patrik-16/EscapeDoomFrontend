@@ -1,3 +1,5 @@
+import exp from "constants";
+
 const sessionString = 'sessionId'
 
 //TODO: Change back to localeStorage when deploying
@@ -8,3 +10,7 @@ export const getSessionId = () => {
 export const setSessionId = (sessionId: string) => {
     return sessionStorage.setItem(sessionString, sessionId)
 }
+
+export const removeSessionId = () => {
+    sessionStorage.removeItem(sessionString)
+};

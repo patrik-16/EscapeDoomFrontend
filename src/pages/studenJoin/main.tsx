@@ -4,7 +4,7 @@ import {Alert, Button, Card, CardContent, Grid, Snackbar, Stack, TextField, Typo
 import {common} from "@mui/material/colors";
 import { useNavigate } from 'react-router-dom';
 import { useGet } from '../../hooks/useGet';
-import { getSessionId, setSessionId } from '../../utils/GameSessionHandler';
+import {getSessionId, removeSessionId, setSessionId} from '../../utils/GameSessionHandler';
 
 const StudentJoin = () => {
 
@@ -29,7 +29,6 @@ const StudentJoin = () => {
                 setSnackbar(true);
             }
             if (response.isSuccess) {
-                console.log("in success")
                 const sessionId = getSessionId();
                 //@ts-ignore
                 switch (responseData.state) {
@@ -40,7 +39,7 @@ const StudentJoin = () => {
                         navigate(`/game-session/${responseData.sessionId}`);
                         break;
                     case "STOPPED":
-                        // navigate("/")
+                        removeSessionId()
                         setSnackbar(true)
                         break
                     case "JOINABLE":

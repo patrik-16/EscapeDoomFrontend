@@ -4,6 +4,7 @@ import { common } from "@mui/material/colors";
 import { useNavigate, useParams } from "react-router-dom";
 import UserCard from "./UserCard";
 import { getSessionId } from "../../utils/GameSessionHandler";
+import {useGet} from "../../hooks/useGet";
 
 const GameLobby = () => {
     
@@ -13,6 +14,7 @@ const GameLobby = () => {
     const [users, setUsers] = useState([])
     const [countDown, setCountDown] = useState(5)
     const [isStarted, setIsStarted] = useState(false)
+
 
     const { lobbyID } = useParams()
 
@@ -51,25 +53,42 @@ const GameLobby = () => {
     }, [countDown, isStarted]);
     useEffect(() => {
         const sessionId = getSessionId()
-        const url = `http://localhost:8090/api/join/lobby/${sessionId}`
-        const source = new EventSource(url)
-        source.addEventListener("yourName", (e) => {
-            const parsedData = e.data
-            setName(parsedData)
-        })
 
-        source.addEventListener("allNames", (e) => {
-            const parsedData = JSON.parse(e.data)
-            setUsers(parsedData.players)
-        })
+        fetch(`${import.meta.env.VITE_GAME_BASE_URL}/join/status/${sessionId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.state === "JOINABLE") {
+                    const url = `http://localhost:8090/api/join/lobby/${sessionId}`
+                    const source = new EventSource(url)
+                    source.onerror = (event) => {
+                        console.log("errors")
+                        //navigate("/")
+                    };
+                    source.addEventListener("yourName", (e) => {
+                        const parsedData = e.data
+                        setName(parsedData)
+                    })
 
-        source.addEventListener("started", (e) => {
-            setIsStarted(true)
-        })
+                    source.addEventListener("allNames", (e) => {
+                        const parsedData = JSON.parse(e.data)
+                        setUsers(parsedData.players)
+                    })
 
-        return () => {
-            source.close()
-        }
+                    source.addEventListener("started", (e) => {
+                        setIsStarted(true)
+                        source.close()
+                    })
+
+                    return () => {
+                        source.close()
+                    }
+                } else {
+                    navigate(`/game-session/${sessionId}`);
+                }
+            }).catch(error => {
+                console.log("error in ststus lobby reqest")
+               // navigate("/")
+        })
     }, [])
 
     return (
