@@ -28,10 +28,7 @@ const EscapeView = () => {
     const waiting : string = "WAITING"
     const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
-    const [code, setCode] = useState(`private static int solve() {
-    return 35 + 7; 
-}
-    `)
+    const [code, setCode] = useState("//To get the riddle code Connect to the console node \n//Hint: that are the yellow Icons")
 
     const [language, setLangauge] = useState('java')
     const sessionID = getSessionId()
@@ -69,7 +66,16 @@ const EscapeView = () => {
                 break
             }
             case compileStatus.WON: {
-                navigate('/leaderboard')
+                const sessionId = getSessionId()
+                fetch(`${import.meta.env.VITE_GAME_BASE_URL}/join/status/${sessionId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        //TODO find out why the leaderboard wont work from nav here
+                        navigate(`/leaderboard/${data.roomID}`)
+                    }).catch(error => {
+                    console.log("err")
+                    }
+                )
                 break
             }
         }
