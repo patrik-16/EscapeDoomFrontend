@@ -12,6 +12,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import type {} from '@mui/lab/themeAugmentation';
 import { Link, useNavigate } from 'react-router-dom';
 import { green } from '@mui/material/colors';
+import {NodeInterface, NodeType} from "./Nodes/NodeInterface";
 
 enum compileStatus {
     ERROR = "ERROR",
@@ -142,6 +143,11 @@ const EscapeView = () => {
         editorRef.current = editor
     }
 
+    addEventListener('beforeunload', function(event) {
+
+        event.returnValue = 'You have unsaved changes.';
+    })
+
     return (
         <Stack direction="row" alignItems="center" height="100vh">
             <Stack direction="column" height="100vh" maxWidth={"31.5vw"}>
@@ -239,7 +245,7 @@ const EscapeView = () => {
                 height={"100%"}
             >
                 {
-                    sceneInfo.nodes ? (sceneInfo.nodes.map((node: NodeInterface, index: number) => ( 
+                    sceneInfo.nodes ? (sceneInfo.nodes.map((node: NodeInterface, index: number) => (
                         <Node key={index} pos={node.pos} nodeInfos={node.nodeInfos} type={node.type as NodeType} codeSetter={setCode} />
                     ))) : <></>
                 }

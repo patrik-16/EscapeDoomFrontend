@@ -2,6 +2,7 @@ import { Settings, Input, Search, Visibility, SettingsInputHdmi } from "@mui/ico
 import { Backdrop, Box, Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogTitle, Divider, IconButton, List, ListItem, Stack, Typography } from "@mui/material";
 import { amber, blue, deepPurple, grey } from "@mui/material/colors";
 import { useState } from "react";
+import {NodeInstance, NodeInterface} from "./NodeInterface";
 
 enum NodeType {
     Console,
@@ -12,7 +13,7 @@ enum NodeType {
 
 //TODO: Make this into IconButtonBuilder
 export const NodeBuilder = (
-    {pos, nodeInfos}: NodeInstance, 
+    {pos, nodeInfos}: NodeInstance,
     iconElement: any, 
     color: any, 
     onClick?: () => void) => {
