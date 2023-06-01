@@ -12,7 +12,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import type {} from '@mui/lab/themeAugmentation';
 import { Link, useNavigate } from 'react-router-dom';
 import { green } from '@mui/material/colors';
-import {NodeInterface, NodeType} from "./Nodes/NodeInterface";
+import { NodeInterface, NodeType } from './Nodes/NodeInterface';
 
 enum compileStatus {
     ERROR = "ERROR",
@@ -240,7 +240,7 @@ const EscapeView = () => {
                 height={"100%"}
             >
                 {
-                    sceneInfo.nodes ? (sceneInfo.nodes.map((node: NodeInterface, index: number) => (
+                    sceneInfo.nodes ? (sceneInfo.nodes.map((node: NodeInterface, index: number) => ( 
                         <Node key={index} pos={node.pos} nodeInfos={node.nodeInfos} type={node.type as NodeType} codeSetter={setCode} />
                     ))) : <></>
                 }

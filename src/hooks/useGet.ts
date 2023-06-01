@@ -27,7 +27,6 @@ export const useGet = (url: string, needToken = false, isEnabled = true) => {
     }
 
     return useQuery({
-        queryKey: ['getData'],
         retry: 1,
         queryFn: async () => {
             const { data } = await axios.get(url, { headers })

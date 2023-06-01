@@ -2,7 +2,6 @@ import { Box, Stack, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { formatDate } from "../../utils/TimeFormatter";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { useGet } from "../../hooks/useGet";
 import { getLeaderboardScores } from "../../hooks/fetchLeaderboard";
 
 interface usrProps {
@@ -22,6 +21,10 @@ const EscapeLeaderboard = () => {
     const location = useLocation();
     const roomID = location.pathname.split("/").at(-1)
     const playerScores = getLeaderboardScores(`${import.meta.env.VITE_GAME_BASE_URL}/leaderboard/${roomID}`)
+
+    console.log("Location", location)
+    console.log("Room ID", roomID)
+    console.log("Playerscores", playerScores.data)
 
     return (
       <Stack alignItems={"center"} mt={5} >

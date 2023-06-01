@@ -14,7 +14,7 @@ export const getLeaderboardScores = (url: string) => {
     let headers = {}
 
     return useQuery({
-        queryKey: ['getData'],
+        queryKey: ['getLeaderboardScores'],
         retry: 1,
         queryFn: async () => {
             const { data } = await axios.get(url, { headers })

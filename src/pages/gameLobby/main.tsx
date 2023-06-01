@@ -120,7 +120,7 @@ const GameLobby = () => {
                 { users.map((playerName, index) => (
 
                             <Grid key={index} xs={4} item p={1}>
-                                <UserCard playerName={playerName}/>
+                                <UserCard playerName={playerName} isMainUsr={name === playerName}/>
                             </Grid>
 
                         ))
