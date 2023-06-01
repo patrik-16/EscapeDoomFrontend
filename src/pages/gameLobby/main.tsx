@@ -42,7 +42,7 @@ const GameLobby = () => {
             const sessionId = getSessionId();
             setIsStarted(false);
             setCountDown(5);
-            navigate(`/game-session/${sessionId}`);
+            navigate(`/session/${sessionId}`);
         }
 
         return () => {
@@ -58,7 +58,7 @@ const GameLobby = () => {
             .then(response => response.json())
             .then(data => {
                 if (data.state === "JOINABLE") {
-                    const url = `http://localhost:8090/api/join/lobby/${sessionId}`
+                    const url = `${import.meta.env.VITE_GAME_BASE_URL}/join/lobby/${sessionId}`
                     const source = new EventSource(url)
                     source.onerror = (event) => {
                         console.log("errors")
@@ -83,7 +83,7 @@ const GameLobby = () => {
                         source.close()
                     }
                 } else {
-                    navigate(`/game-session/${sessionId}`);
+                    navigate(`/session/${sessionId}`);
                 }
             }).catch(error => {
                 console.log("error in ststus lobby reqest")

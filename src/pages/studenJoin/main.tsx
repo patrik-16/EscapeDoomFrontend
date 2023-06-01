@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGet } from '../../hooks/useGet';
 import {getSessionId, removeSessionId, setSessionId} from '../../utils/GameSessionHandler';
 
+
 const StudentJoin = () => {
 
     const navigate = useNavigate()
@@ -20,10 +21,13 @@ const StudentJoin = () => {
     }
 
     const sendID = async (e: React.FormEvent<HTMLFormElement>) => {
+        document.cookie = "SESSION=; Max-Age=0; Path=/; HttpOnly";
         e.preventDefault()
         if (!getSessionId()) {
             const response = (await refetch());
             const responseData = response.data;
+
+            console.log("in !getSeeion ID", responseData)
 
             if (response.isError) {
                 setSnackbar(true);
@@ -36,14 +40,14 @@ const StudentJoin = () => {
                         //@ts-ignore
                         setSessionId(responseData.sessionId);
                         //@ts-ignore
-                        navigate(`/game-session/${responseData.sessionId}`);
+                        navigate(`/session/${responseData.sessionId}`);
                         break;
                     case "STOPPED":
                         removeSessionId()
                         setSnackbar(true)
                         break
                     case "JOINABLE":
-                        navigate(`/game-lobby/${roomPin}`)
+                        navigate(`/lobby/${roomPin}`)
                         //@ts-ignore
                         setSessionId(responseData.sessionId)
                         break
@@ -51,7 +55,7 @@ const StudentJoin = () => {
             }
         } else {
             const sessionId = getSessionId()
-            navigate(`/game-session/${sessionId}`);
+            navigate(`/session/${sessionId}`);
         }
 
     }

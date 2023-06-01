@@ -5,6 +5,8 @@ import { getLectureToken } from '../utils/TokenHandler';
 
 export const usePost = (url: string, usrEmail?: string, usrPassword?: string) => {
 
+    console.log(url)
+
     let body = {}
     let headers = {}
 

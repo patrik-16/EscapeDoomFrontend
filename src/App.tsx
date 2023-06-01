@@ -29,8 +29,8 @@ function App() {
                     <Route path="/" element={<StudentJoin/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/LectureConsole" element={<LectureConsole/>}/>
-                    <Route path="/game-lobby/:lobbyID" element={<GameLobby/>}/>
-                    <Route path="/game-session/:lobbyID" element={<EscapeView />}/>
+                    <Route path="/lobby/:lobbyID" element={<GameLobby/>}/>
+                    <Route path="/session/:lobbyID" element={<EscapeView />}/>
                     <Route path="/leaderboard/:lobbyID" element={<EscapeLeaderboard />}/>
                     <Route path="*" element={<NoRoute />}/>
                 </Routes>

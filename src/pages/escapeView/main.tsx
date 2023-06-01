@@ -108,7 +108,7 @@ const EscapeView = () => {
                         //@ts-ignore
                         if (getStageData.data.roomID !== null && getStageData.data.roomID !== undefined) {
                             //@ts-ignore
-                            navigate(`/game-lobby/${getStageData.data.roomID}`);
+                            navigate(`/lobby/${getStageData.data.roomID}`);
                         } else {
                             navigate("/")
                         }
