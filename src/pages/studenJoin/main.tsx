@@ -21,7 +21,7 @@ const StudentJoin = () => {
     }
 
     const sendID = async (e: React.FormEvent<HTMLFormElement>) => {
-        document.cookie = "SESSION=; Max-Age=0; Path=/; HttpOnly";
+        document.cookie = "SESSION=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
         e.preventDefault()
         if (!getSessionId()) {
             const response = (await refetch());
