@@ -6,7 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {AccessTime, Circle, Close, OpenInBrowser, PlayArrow, Share} from "@mui/icons-material";
-import {Alert, CardActionArea, FormControl, InputLabel, MenuItem, Select, Snackbar, Stack} from "@mui/material";
+import {Alert, CardActionArea, FormControl, InputLabel, Link, MenuItem, Select, Snackbar, Stack} from "@mui/material";
 import { usePost } from '../../hooks/usePost';
 
 interface Props {
@@ -56,6 +56,7 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
     const startRoom = async () => {
         const refetchResponse = (await startEscapeRoomCall.refetch())
         if (!refetchResponse.isError) {
+            setLobbyID(lobbyID)
             setStatus('PLAYING')
         } else {
             setOpen(true)
@@ -91,6 +92,10 @@ const RoomCard = ({name, topic, imgUrl, time, escapeRoomState, id}: Props) => {
                     <Typography gutterBottom sx={{fontSize: 14}} component="div">
                         LobbyID: {lobbyID}
                     </Typography>
+                    : ''
+                }
+                {lobbyID !== 0 ?
+                    <Link target="_blank" rel="noopener" sx={{fontSize: 14}} href={"/leaderboard/" + lobbyID }>Leaderboard</Link>
                     : ''
                 }
                 
