@@ -143,11 +143,6 @@ const EscapeView = () => {
         editorRef.current = editor
     }
 
-    addEventListener('beforeunload', function(event) {
-
-        event.returnValue = 'You have unsaved changes.';
-    })
-
     return (
         <Stack direction="row" alignItems="center" height="100vh">
             <Stack direction="column" height="100vh" maxWidth={"31.5vw"}>
