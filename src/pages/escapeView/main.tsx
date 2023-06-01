@@ -13,6 +13,7 @@ import type {} from '@mui/lab/themeAugmentation';
 import { Link, useNavigate } from 'react-router-dom';
 import { green } from '@mui/material/colors';
 import { NodeInterface, NodeType } from './Nodes/NodeInterface';
+import { getStage } from '../../hooks/getStage';
 
 enum compileStatus {
     ERROR = "ERROR",
@@ -26,7 +27,6 @@ enum compileStatus {
 const EscapeView = () => {
 
     const navigate = useNavigate()
-    const waiting : string = "WAITING"
     const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
     const [code, setCode] = useState("//To get the riddle code Connect to the console node \n//Hint: that are the yellow Icons")
@@ -47,7 +47,7 @@ const EscapeView = () => {
         "dateTima": null
     })
 
-    const getStage = useGet(`${import.meta.env.VITE_GAME_BASE_URL}/join/getStage/${sessionID}`)
+    const getStageData = getStage(sessionID)
     const submitCodeCall = submitCode(`${import.meta.env.VITE_GAME_BASE_URL}/join/submitCode`, submitCodeBody)
     //@ts-ignore
     const getCodeCall = getCode(`${import.meta.env.VITE_GAME_BASE_URL}/join/getCode/${sessionID}`)
@@ -55,28 +55,16 @@ const EscapeView = () => {
     const handleCodeSubmission = async () => {
         await submitCodeCall.refetch()
         let respo = await getCodeCall.refetch()
-        while(respo.data.status === waiting) {
+        while(respo.data.status === compileStatus.WAITING) {
             await sleep(500)
             respo = await getCodeCall.refetch()
         }
 
         switch (respo.data.status) {
-            case compileStatus.SUCCESS: {
-                //TODO: Make Node for reload visible ;)
-                // window.location.reload()
-                break
-            }
             case compileStatus.WON: {
-                const sessionId = getSessionId()
-                fetch(`${import.meta.env.VITE_GAME_BASE_URL}/join/status/${sessionId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        //TODO find out why the leaderboard wont work from nav here
-                        navigate(`/leaderboard/${data.roomID}`)
-                    }).catch(error => {
-                    console.log("err")
-                    }
-                )
+                //@ts-ignore
+                removeSessionId()
+                navigate(`/leaderboard/${getStageData.data.roomID}`)
                 break
             }
         }
@@ -100,16 +88,16 @@ const EscapeView = () => {
     }
 
     useEffect(() => {
-        if (!getStage.isFetching && !getStage.isError) {
-            if (getStage.data === undefined || getStage.data == null) {
+        if (!getStageData.isFetching && !getStageData.isError) {
+            if (getStageData.data === undefined || getStageData.data === null) {
                 window.location.reload()
             }
             try {
                 //@ts-ignore
-                switch (getStage.data.state) {
+                switch (getStageData.data.state) {
                     case "PLAYING":
                         //@ts-ignore
-                        setSceneInfo(JSON.parse(getStage.data.stage[0])[0]);
+                        setSceneInfo(JSON.parse(getStageData.data.stage[0])[0]);
                         break;
                     case "STOPPED":
                         removeSessionId();
@@ -118,10 +106,9 @@ const EscapeView = () => {
                         break;
                     case "JOINABLE":
                         //@ts-ignore
-                        //@ts-ignore
-                        if (getStage.data.roomID !== null) {
+                        if (getStageData.data.roomID !== null && getStageData.data.roomID !== undefined) {
                             //@ts-ignore
-                            navigate(`/game-lobby/${getStage.data.roomID}`);
+                            navigate(`/game-lobby/${getStageData.data.roomID}`);
                         } else {
                             navigate("/")
                         }
@@ -131,7 +118,7 @@ const EscapeView = () => {
                 window.location.reload()
             }
         }
-    }, [getStage.data])
+    }, [getStageData.data])
 
     useEffect(() => {
         if (Object.keys(sceneInfo).length !== 0) console.log(sceneInfo)
@@ -195,7 +182,7 @@ const EscapeView = () => {
                             }}
                             startIcon={<PlayArrow/>} 
                             variant='contained' 
-                            loading={getCodeCall.data?.status === waiting}
+                            loading={getCodeCall.data?.status === compileStatus.WAITING}
                             loadingPosition="start"
                             onClick={handleCodeSubmission}
                         >

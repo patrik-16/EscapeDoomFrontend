@@ -28,6 +28,7 @@ export const useGet = (url: string, needToken = false, isEnabled = true) => {
 
     return useQuery({
         retry: 1,
+        queryKey: ['basicUseGetHook'],
         queryFn: async () => {
             const { data } = await axios.get(url, { headers })
             return data as [escapeRoomData]
