@@ -11,6 +11,9 @@ enum NodeType {
     Zoom
 }
 
+const maxWidthConst = "40vw"
+const minWidthConst = "600px"
+
 //TODO: Make this into IconButtonBuilder
 export const NodeBuilder = (
     {pos, nodeInfos}: NodeInstance, 
@@ -38,7 +41,6 @@ export const NodeBuilder = (
 
 export const ConsoleNode = ({pos, nodeInfos}: NodeInstance, codeSetter: React.Dispatch<React.SetStateAction<string>>) => {
     const [isOpen, setIsOpen] = useState(false)
-    //TODO: Extract Console and Data Node Popup Element as component
     return(
         <>
             <IconButton 
@@ -57,7 +59,7 @@ export const ConsoleNode = ({pos, nodeInfos}: NodeInstance, codeSetter: React.Di
                 <Settings fontSize='small' />
             </IconButton>
             <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} open={isOpen} onClick={() => setIsOpen(false)}>
-                <Card sx={{ minWidth: 600 }}>
+                <Card sx={{ minWidth: minWidthConst, maxWidth: maxWidthConst }}>
                     <Box 
                         sx={{backgroundColor: amber[600]}} 
                         minHeight={50} 
@@ -115,7 +117,7 @@ export const DataNode = ({pos, nodeInfos}: NodeInstance) => {
                 <Input fontSize="small"/>
             </IconButton>
             <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} open={isOpen} onClick={() => setIsOpen(false)}>
-                <Card sx={{ minWidth: 600 }}>
+                <Card sx={{ minWidth: minWidthConst, maxWidth: maxWidthConst }}>
                     <Box 
                         sx={{backgroundColor: amber[600]}} 
                         minHeight={50} 
@@ -172,7 +174,7 @@ export const DetailsNode = ({pos, nodeInfos}: NodeInstance) => {
             <Search fontSize='small' />
         </IconButton>
     <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} open={isOpen} onClick={() => setIsOpen(false)}>
-        <Card sx={{ minWidth: 600 }}>
+        <Card sx={{ minWidth: minWidthConst, maxWidth: maxWidthConst }}>
             <Box 
                 sx={{backgroundColor: amber[600]}} 
                 minHeight={50} 
