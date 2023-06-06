@@ -1,6 +1,6 @@
 export enum NodeType {
     Console = 'Console',
-    Data = 'Data',
+    Story = 'Story',
     Details = 'Details',
     Zoom = 'Zoom'
 }

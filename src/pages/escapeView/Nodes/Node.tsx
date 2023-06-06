@@ -6,7 +6,7 @@ import { NodeInstance, NodeInterface } from "./NodeInterface";
 
 enum NodeType {
     Console,
-    Data,
+    Story,
     Details,
     Zoom
 }
@@ -121,7 +121,6 @@ export const StoryNode = ({pos, nodeInfos}: NodeInstance) => {
                         </Typography>
                     </Stack>
                     <CardContent>
-                        <Typography color={"grey"}> Object output </Typography>
                         <Typography mb={2}> {nodeInfos.desc} </Typography>
                     </CardContent>
                 </Card>
@@ -197,7 +196,7 @@ const renderNodeType = ({type, pos, nodeInfos, codeSetter}: NodeInterface) => {
     switch(type) {
         case "Console":
             return ConsoleNode({pos, nodeInfos}, codeSetter)
-        case "Data":
+        case "Story":
             return StoryNode({pos, nodeInfos})
         case "Details":
             return DetailsNode({pos, nodeInfos})
