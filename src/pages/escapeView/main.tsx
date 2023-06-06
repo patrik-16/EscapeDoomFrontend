@@ -98,7 +98,7 @@ const EscapeView = () => {
         //@ts-ignore
         setBackgroundWidth(backgroundRef.current.clientWidth)
         //@ts-ignore
-        setImgHeight((backgroundRef.current.clientWidth / 16 * 9))
+        setImgHeight((backgroundRef.current.clientWidth / 16.0 * 9.0))
     }, [])
 
     useEffect(() => {
@@ -108,9 +108,9 @@ const EscapeView = () => {
             //@ts-ignore
             setBackgroundWidth(backgroundRef.current.clientWidth)
             //@ts-ignore
-            setImgHeight((backgroundRef.current.clientWidth / 16 * 9))
+            setImgHeight((backgroundRef.current.clientWidth / 16.0 * 9.0))
             //@ts-ignore
-            console.log('W: %d; H: %d; AH: %d', backgroundRef.current.clientWidth, backgroundRef.current.clientHeight, (backgroundRef.current.clientWidth / 16 * 9))
+            console.log('W: %d; H: %d; AH: %d', backgroundRef.current.clientWidth, backgroundRef.current.clientHeight, (backgroundRef.current.clientWidth / 16.0 * 9.0))
         }
 
         window.addEventListener('resize', () => {handleWindowResize()});
@@ -133,7 +133,6 @@ const EscapeView = () => {
                         break;
                     case "STOPPED":
                         removeSessionId();
-                        //TODO INFORM USER OF SESSION NOT avalibe
                         navigate("/");
                         break;
                     case "JOINABLE":
@@ -260,7 +259,13 @@ const EscapeView = () => {
             >
                     {
                         sceneInfo.nodes ? (sceneInfo.nodes.map((node: NodeInterface, index: number) => ( 
-                            <Node key={index} pos={{x: node.pos.x * backgroundWidth, y: node.pos.y * imgHeight + ((backgroundHeight - imgHeight) / 2)}} nodeInfos={node.nodeInfos} type={node.type as NodeType} codeSetter={setCode} />
+                            <Node 
+                                key={index} 
+                                pos={{x: node.pos.x * backgroundWidth, y: node.pos.y * imgHeight + ((backgroundHeight - imgHeight) / 2.0)}} 
+                                nodeInfos={node.nodeInfos} 
+                                type={node.type as NodeType} 
+                                codeSetter={setCode} 
+                            />
                         ))) : <></>
                     }
             </Box>

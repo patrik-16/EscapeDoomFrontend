@@ -18,9 +18,6 @@ function App() {
         }
     })
 
-    //TODO: Remove this
-    console.log(import.meta.env)
-
     return (
         <div className="App">
             <ThemeProvider theme={darkTheme}>

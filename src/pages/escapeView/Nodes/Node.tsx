@@ -1,6 +1,6 @@
-import { Settings, Input, Search, Visibility, SettingsInputHdmi } from "@mui/icons-material";
-import { Backdrop, Box, Button, Card, CardActions, CardContent, Divider, IconButton, Stack, Typography } from "@mui/material";
-import { amber, blue, deepPurple, grey } from "@mui/material/colors";
+import { Settings, Search, Visibility, AutoStories } from "@mui/icons-material";
+import { Backdrop, Box, Button, Card, CardContent, Divider, IconButton, Stack, Typography } from "@mui/material";
+import { amber, blue, deepPurple, purple } from "@mui/material/colors";
 import { useState } from "react";
 import { NodeInstance, NodeInterface } from "./NodeInterface";
 
@@ -11,31 +11,34 @@ enum NodeType {
     Zoom
 }
 
+interface IconButtonInt {
+    pos: {x: number, y: number}, 
+    color: string, 
+    icon: any, 
+    openfunction: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const iconSize = 30
 const maxWidthConst = "40vw"
 const minWidthConst = "600px"
 
-//TODO: Make this into IconButtonBuilder
-export const NodeBuilder = (
-    {pos, nodeInfos}: NodeInstance, 
-    iconElement: any, 
-    color: any, 
-    onClick?: () => void) => {
+const IconButtonProp: React.FC<IconButtonInt> = ({pos, color, icon, openfunction}: IconButtonInt) => {
     return (
         <IconButton
-        size="small"
-        onClick={onClick}
-        sx={{
-            position: "relative",
-            color: {color},
-            left: pos.x,
-            top: pos.y,
-            width: 26,
-            height: 26, 
-            border: 2, 
-            borderRadius: '50%'
-        }}>
-            {iconElement}
-        </IconButton>
+                size="small"
+                onClick={() => openfunction(true)} 
+                sx={{
+                    color: color,
+                    position: "relative",
+                    left: pos.x,
+                    top: pos.y,
+                    width: iconSize,
+                    height: iconSize, 
+                    border: 2, 
+                    borderRadius: '50%'
+                }}>
+                {icon} 
+            </IconButton>
     )
 }
 
@@ -43,24 +46,17 @@ export const ConsoleNode = ({pos, nodeInfos}: NodeInstance, codeSetter: React.Di
     const [isOpen, setIsOpen] = useState(false)
     return(
         <>
-            <IconButton
-                size="small"
-                onClick={() => setIsOpen(true)} 
-                sx={{
-                    color: amber[600],
-                    position: "relative",
-                    left: pos.x,
-                    top: pos.y,
-                    width: 26,
-                    height: 26, 
-                    border: 2, 
-                    borderRadius: '50%'
-                }}>
-                <Settings fontSize='small' />
-            </IconButton>
+            <IconButtonProp 
+                pos={pos}
+                color={amber[600]}
+                icon={<Settings fontSize='small' />}
+                openfunction={setIsOpen}
+            />
             <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} open={isOpen} onClick={() => setIsOpen(false)}>
                 <Card sx={{ minWidth: minWidthConst, maxWidth: maxWidthConst }}>
-                    <Box 
+                    <Stack 
+                        direction="row"
+                        alignItems={"center"}
                         sx={{backgroundColor: amber[600]}} 
                         minHeight={50} 
                         pl={2}
@@ -72,7 +68,7 @@ export const ConsoleNode = ({pos, nodeInfos}: NodeInstance, codeSetter: React.Di
                         >
                             {nodeInfos.title} 
                         </Typography>
-                    </Box>
+                    </Stack>
                     <CardContent>
                         <Typography color={"grey"}> Object Description </Typography>
                         <Typography mb={2}> {nodeInfos.desc} </Typography>
@@ -94,32 +90,25 @@ export const ConsoleNode = ({pos, nodeInfos}: NodeInstance, codeSetter: React.Di
     )
 }
 
-export const DataNode = ({pos, nodeInfos}: NodeInstance) => {
+export const StoryNode = ({pos, nodeInfos}: NodeInstance) => {
     const [isOpen, setIsOpen] = useState(false)
+
+    const mainColor = purple[400];
     
     return(
         <>
-            <IconButton 
-            size="small" 
-            color="warning"
-            onClick={() => {
-                setIsOpen(true)
-            }}
-            sx={{
-                position: "relative",
-                left: pos.x,
-                top: pos.y,
-                width: 26,
-                height: 26, 
-                border: 2, 
-                borderRadius: '50%'
-            }}>
-                <Input fontSize="small"/>
-            </IconButton>
+            <IconButtonProp 
+                pos={pos}
+                color={mainColor}
+                icon={<AutoStories fontSize="small"/>}
+                openfunction={setIsOpen}
+            />
             <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} open={isOpen} onClick={() => setIsOpen(false)}>
                 <Card sx={{ minWidth: minWidthConst, maxWidth: maxWidthConst }}>
-                    <Box 
-                        sx={{backgroundColor: amber[600]}} 
+                    <Stack 
+                        direction="row"
+                        alignItems={"center"}
+                        sx={{backgroundColor: mainColor}} 
                         minHeight={50} 
                         pl={2}
                     >
@@ -130,21 +119,10 @@ export const DataNode = ({pos, nodeInfos}: NodeInstance) => {
                         >
                             {nodeInfos.title} 
                         </Typography>
-                    </Box>
+                    </Stack>
                     <CardContent>
                         <Typography color={"grey"}> Object output </Typography>
                         <Typography mb={2}> {nodeInfos.desc} </Typography>
-
-                        <Box sx={{backgroundColor: '#2c2c2c', p: 1, mb: 2}}>
-                            <Typography fontWeight={"bold"} fontSize={14} mb={1}> Parameter </Typography>
-                            <Typography> {nodeInfos.parameterType} </Typography>
-                            <Divider sx={{flexGrow: 1, borderBottomWidth: 2, my: 2}} orientation="horizontal"/>
-                            <Typography fontWeight={"bold"} fontSize={14} mb={1}> Non-real example </Typography>
-                            <Typography> {nodeInfos.exampleOutput} </Typography>
-                        </Box>
-                        <Stack direction={"row"} justifyContent={"end"}>
-                            <Button sx={{backgroundColor: amber[600]}} variant="contained"> Connect </Button>
-                        </Stack>
                     </CardContent>
                 </Card>
             </Backdrop>
@@ -155,48 +133,42 @@ export const DataNode = ({pos, nodeInfos}: NodeInstance) => {
 export const DetailsNode = ({pos, nodeInfos}: NodeInstance) => {
     const [isOpen, setIsOpen] = useState(false)
 
+    const mainColor = blue[600]
+
     return (
         <>
-        
-        <IconButton 
-            size="small"
-            onClick={() => {setIsOpen(true)}}
-            sx={{
-                position: "relative",
-                color: blue[600],
-                left: pos.x,
-                top: pos.y,
-                width: 26,
-                height: 26, 
-                border: 2, 
-                borderRadius: '50%'
-            }}>
-            <Search fontSize='small' />
-        </IconButton>
-    <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} open={isOpen} onClick={() => setIsOpen(false)}>
-        <Card sx={{ minWidth: minWidthConst, maxWidth: maxWidthConst }}>
-            <Box 
-                sx={{backgroundColor: amber[600]}} 
-                minHeight={50} 
-                pl={2}
-            >
-                <Typography
-                    sx={{verticalAlign: "center"}} 
-                    color={"black"}
-                    fontWeight={"bold"}
+        <IconButtonProp 
+            pos={pos}
+            color={mainColor}
+            icon={<Search fontSize='small' />}
+            openfunction={setIsOpen}
+        />
+        <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} open={isOpen} onClick={() => setIsOpen(false)}>
+            <Card sx={{ minWidth: minWidthConst, maxWidth: maxWidthConst }}>
+                <Stack 
+                    direction="row"
+                    alignItems={"center"}
+                    sx={{backgroundColor: mainColor}}
+                    minHeight={50} 
+                    pl={2}
                 >
-                    {nodeInfos.title} 
-                </Typography>
-            </Box>
-            <CardContent>
-                <Stack direction="row" height="400px" gap={2}>
-                    <Box width="80%" height="100%" 
-                    sx={{backgroundImage: `url(${nodeInfos.png})`, backgroundSize: "contain", backgroundRepeat: "no-repeat"}}/>
-                    <Typography mb={2}> {nodeInfos.desc} </Typography>
+                    <Typography
+                        sx={{verticalAlign: "center"}} 
+                        color={"black"}
+                        fontWeight={"bold"}
+                    >
+                        {nodeInfos.title} 
+                    </Typography>
                 </Stack>
-            </CardContent>
-        </Card>
-    </Backdrop>
+                <CardContent>
+                    <Stack direction="row" height="400px" gap={2}>
+                        <Box width="80%" height="100%" 
+                        sx={{backgroundImage: `url(${nodeInfos.png})`, backgroundSize: "contain", backgroundRepeat: "no-repeat"}}/>
+                        <Typography mb={2}> {nodeInfos.desc} </Typography>
+                    </Stack>
+                </CardContent>
+            </Card>
+        </Backdrop>
     </>
     )
 }
@@ -211,8 +183,8 @@ export const ZoomNode = ({pos, nodeInfos}: NodeInstance) => {
                 left: pos.x,
                 top: pos.y,
                 color: deepPurple[400],
-                width: 26,
-                height: 26, 
+                width: iconSize,
+                height: iconSize, 
                 border: 2, 
                 borderRadius: '50%'
             }}>
@@ -226,7 +198,7 @@ const renderNodeType = ({type, pos, nodeInfos, codeSetter}: NodeInterface) => {
         case "Console":
             return ConsoleNode({pos, nodeInfos}, codeSetter)
         case "Data":
-            return DataNode({pos, nodeInfos})
+            return StoryNode({pos, nodeInfos})
         case "Details":
             return DetailsNode({pos, nodeInfos})
         case "Zoom":
