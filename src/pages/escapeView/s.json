@@ -1,0 +1,52 @@
+[
+    {
+        "id": null,
+        "name": "startScene",
+        "bgImg": "https://i.imgur.com/aU8agX4.png",
+        "nodes": [
+            {
+                "pos": {
+                    "x": 0.625,
+                    "y": 0.3
+                },
+                "type": "Console",
+                "nodeInfos": {
+                    "png": "png.url",
+                    "desc": "The door is locked by a passcode, next to the door is some cryptic text. Maybe I will find some hints in the room of what to do with it",
+                    "title": "INPUT",
+                    "outputID": 1,
+                    "returnType": "an english sentence",
+                    "codeSnipped": "/**\n* @param boardInput the input string\n* @return the message you need\n*/\npublic static String solve(String boardInput) {\n\n}",
+                    "exampleInput": "\"Hello i am the input\""
+                }
+            },
+            {
+                "pos": {
+                    "x": 0.475,
+                    "y": 0.3
+                },
+                "type": "Details",
+                "nodeInfos": {
+                    "png": "https://asset.museum-digital.org/brandenburg/images/202004/gaius-julius-caesar-100-44-v-chr-38964.jpg",
+                    "desc": "This photo look familiar, I wonder if he would have know what to do ",
+                    "title": "An old Friend"
+                }
+            },
+            {
+                "pos": {
+                    "x": 0.01,
+                    "y": 0.75
+                },
+                "type": "Data",
+                "nodeInfos": {
+                    "desc": "You fell asleep on Friday while studying for an exam at the university. When you wake up on Saturday morning, you realize your \"luck.\" It quickly becomes clear that you want to get out of there, but the university has locked doors and other security measures. And so, your masterful escape begins.",
+                    "title": "Where am I",
+                    "outputID": null,
+                    "codeSnipped": null,
+                    "exampleOutput": "",
+                    "parameterType": ""
+                }
+            }
+        ]
+    }
+]

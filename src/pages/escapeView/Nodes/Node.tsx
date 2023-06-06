@@ -43,7 +43,7 @@ export const ConsoleNode = ({pos, nodeInfos}: NodeInstance, codeSetter: React.Di
     const [isOpen, setIsOpen] = useState(false)
     return(
         <>
-            <IconButton 
+            <IconButton
                 size="small"
                 onClick={() => setIsOpen(true)} 
                 sx={{

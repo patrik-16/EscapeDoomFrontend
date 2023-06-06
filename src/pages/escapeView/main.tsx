@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import Editor from '@monaco-editor/react';
 import {Box, Button, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Typography, createTheme} from "@mui/material";
 import Node from './Nodes/Node';
@@ -28,6 +28,11 @@ const EscapeView = () => {
 
     const navigate = useNavigate()
     const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+
+    const backgroundRef = useRef(null)
+    const [backgroundWidth, setBackgroundWidth] = useState(0);
+    const [backgroundHeight, setBackgroundHeight] = useState(0);
+    const [imgHeight, setImgHeight] = useState(0);
 
     const [code, setCode] = useState("//To get the riddle code Connect to the console node \n//Hint: that are the yellow Icons")
 
@@ -86,6 +91,33 @@ const EscapeView = () => {
             "dateTima": null
         })
     }
+
+    useLayoutEffect(() => {
+        //@ts-ignore
+        setBackgroundHeight(backgroundRef.current.clientHeight)
+        //@ts-ignore
+        setBackgroundWidth(backgroundRef.current.clientWidth)
+        //@ts-ignore
+        setImgHeight((backgroundRef.current.clientWidth / 16 * 9))
+    }, [])
+
+    useEffect(() => {
+        const handleWindowResize = () => {
+            //@ts-ignore
+            setBackgroundHeight(backgroundRef.current.clientHeight)
+            //@ts-ignore
+            setBackgroundWidth(backgroundRef.current.clientWidth)
+            //@ts-ignore
+            setImgHeight((backgroundRef.current.clientWidth / 16 * 9))
+            //@ts-ignore
+            console.log('W: %d; H: %d; AH: %d', backgroundRef.current.clientWidth, backgroundRef.current.clientHeight, (backgroundRef.current.clientWidth / 16 * 9))
+        }
+
+        window.addEventListener('resize', () => {handleWindowResize()});
+        return () => {
+            window.removeEventListener('resize', () => {handleWindowResize()})
+        }
+    }, []);
 
     useEffect(() => {
         if (!getStageData.isFetching && !getStageData.isError) {
@@ -215,22 +247,22 @@ const EscapeView = () => {
                     </Stack>
                 </EditorContainer>
             </Stack>
-
             <Box
+                ref={backgroundRef}
                 sx={{
+                    width: "100%",
+                    height: "100%",
                     backgroundImage: `url(${sceneInfo.bgImg})`,
                     backgroundSize: "contain",
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                 }}
-                width={"100%"}
-                height={"100%"}
             >
-                {
-                    sceneInfo.nodes ? (sceneInfo.nodes.map((node: NodeInterface, index: number) => ( 
-                        <Node key={index} pos={node.pos} nodeInfos={node.nodeInfos} type={node.type as NodeType} codeSetter={setCode} />
-                    ))) : <></>
-                }
+                    {
+                        sceneInfo.nodes ? (sceneInfo.nodes.map((node: NodeInterface, index: number) => ( 
+                            <Node key={index} pos={{x: node.pos.x * backgroundWidth, y: node.pos.y * imgHeight + ((backgroundHeight - imgHeight) / 2)}} nodeInfos={node.nodeInfos} type={node.type as NodeType} codeSetter={setCode} />
+                        ))) : <></>
+                    }
             </Box>
         </Stack>
     )
