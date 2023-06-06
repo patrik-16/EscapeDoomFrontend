@@ -37,8 +37,8 @@ const EscapeView = () => {
     const [code, setCode] = useState(`//To get the riddle code Connect to the console node
 //Hint: that are the yellow Icons
 //Blue Icons contain additional Info for the riddle
-//Purple Icons are the story part for the riddle`
-    )
+//Purple Icons are the story part for the riddle
+`)
 
     const [language, setLangauge] = useState('java')
     const sessionID = getSessionId()
@@ -178,9 +178,9 @@ const EscapeView = () => {
                                 label="Language"
                                 onChange={handleChange}
                             > 
-                                <MenuItem value="javascript" > Javascript </MenuItem>
+                                {/* <MenuItem value="javascript" > Javascript </MenuItem> */}
                                 <MenuItem value="java"> Java </MenuItem>
-                                <MenuItem value="python"> Python </MenuItem>
+                                {/* <MenuItem value="python"> Python </MenuItem> */}
                             </Select>
                         </FormControl>
                     </Stack>
