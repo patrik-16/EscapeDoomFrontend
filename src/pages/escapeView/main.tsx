@@ -241,7 +241,7 @@ const EscapeView = () => {
                                     codeExecResponse.status === compileStatus.ERROR ? 'Error Msg' : 'Output'
                                 } 
                             </Typography>
-                            <Typography> {'> '}{codeExecResponse.output} </Typography>
+                            <Typography component="pre"> {'> '}{codeExecResponse.output} </Typography>
                         </Box>
                     </Stack>
                 </EditorContainer>
