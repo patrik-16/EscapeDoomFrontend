@@ -34,10 +34,11 @@ const EscapeView = () => {
     const [backgroundHeight, setBackgroundHeight] = useState(0);
     const [imgHeight, setImgHeight] = useState(0);
 
-    const [code, setCode] = useState(`//To get the riddle code Connect to the console node
-//Hint: that are the yellow Icons
-//Blue Icons contain additional Info for the riddle
-//Purple Icons are the story part for the riddle
+    const [code, setCode] = useState(`// To figure out what to do click on 
+// - Purple Icons for the story / context for the riddle
+// - Blue Icons to get additional Info for the riddle
+// - Yellow Icons to get the code snipped (Dont change that :) )
+//   --> Also when you are sure that you can return the solution !! Remove all Prints !!
 `)
 
     const [language, setLangauge] = useState('java')
