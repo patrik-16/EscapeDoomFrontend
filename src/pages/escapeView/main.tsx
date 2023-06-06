@@ -34,7 +34,11 @@ const EscapeView = () => {
     const [backgroundHeight, setBackgroundHeight] = useState(0);
     const [imgHeight, setImgHeight] = useState(0);
 
-    const [code, setCode] = useState("//To get the riddle code Connect to the console node \n//Hint: that are the yellow Icons")
+    const [code, setCode] = useState(`//To get the riddle code Connect to the console node
+//Hint: that are the yellow Icons
+//Blue Icons contain additional Info for the riddle
+//Purple Icons are the story part for the riddle`
+    )
 
     const [language, setLangauge] = useState('java')
     const sessionID = getSessionId()
