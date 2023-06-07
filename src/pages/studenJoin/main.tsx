@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import BackgroundImage from '../../assets/live-escape-game-1155620.jpg'
 import {Alert, Button, Card, CardContent, Grid, Snackbar, Stack, TextField, Typography} from "@mui/material";
 import {common} from "@mui/material/colors";
-import { useNavigate } from 'react-router-dom';
-import { useGet } from '../../hooks/useGet';
+import {useNavigate} from 'react-router-dom';
+import {useGet} from '../../hooks/useGet';
 import {getSessionId, removeSessionId, setSessionId} from '../../utils/GameSessionHandler';
+import axios from "axios";
 
 
 const StudentJoin = () => {
@@ -25,36 +26,36 @@ const StudentJoin = () => {
         document.cookie = "SESSION=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;domain=194.182.186.44;"
         e.preventDefault()
         if (!getSessionId()) {
-            const response = (await refetch());
-            const responseData = response.data;
+            //const response = (await refetch());
 
-            console.log("in !getSeeion ID", responseData)
+            axios.get(`${import.meta.env.VITE_GAME_BASE_URL}/join/${roomPin}`)
+                .then((response) => {
+                    console.log("axios resp", response)
+                    const responseData = response.data;
 
-            if (response.isError) {
-                setSnackbar(true);
-            }
-            if (response.isSuccess) {
-                const sessionId = getSessionId();
-                //@ts-ignore
-                switch (responseData.state) {
-                    case "PLAYING" :
-                        console.log("in playing")
-                        //@ts-ignore
-                        setSessionId(responseData.sessionId);
-                        //@ts-ignore
-                        navigate(`/session/${responseData.sessionId}`);
-                        break;
-                    case "STOPPED":
-                        removeSessionId()
-                        setSnackbar(true)
-                        break
-                    case "JOINABLE":
-                        navigate(`/lobby/${roomPin}`)
-                        //@ts-ignore
-                        setSessionId(responseData.sessionId)
-                        break
-                }
-            }
+                    const sessionId = getSessionId();
+                    //@ts-ignore
+                    switch (responseData.state) {
+                        case "PLAYING" :
+                            console.log("in playing")
+                            //@ts-ignore
+                            setSessionId(responseData.sessionId);
+                            //@ts-ignore
+                            navigate(`/session/${responseData.sessionId}`);
+                            break;
+                        case "STOPPED":
+                            removeSessionId()
+                            setSnackbar(true)
+                            break
+                        case "JOINABLE":
+                            navigate(`/lobby/${roomPin}`)
+                            //@ts-ignore
+                            setSessionId(responseData.sessionId)
+                            break
+                    }
+
+
+                })
         } else {
             const sessionId = getSessionId()
             navigate(`/session/${sessionId}`);
@@ -75,7 +76,7 @@ const StudentJoin = () => {
                     backgroundColor: '#404040',
                     backgroundBlendMode: 'multiply',
                     backgroundSize: 'cover',
-            }}
+                }}
             >
                 <Typography sx={{paddingBottom: 3}} color={common.white} variant="h2"> Escape Room </Typography>
                 <Card sx={{minWidth: 550, paddingX: 3}}>

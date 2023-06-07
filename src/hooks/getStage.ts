@@ -9,6 +9,8 @@ export const getStage = (sessionID: string) => {
         queryKey: ['getStageHook'],
         queryFn: async () => {
             const url = `${import.meta.env.VITE_GAME_BASE_URL}/join/getStage/${sessionID}`
+            console.log("THE URL IS", url)
+            console.log("THE URL IS", url)
             const { data } = await axios.get(url)
             return data
         },

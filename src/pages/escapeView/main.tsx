@@ -14,6 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { green } from '@mui/material/colors';
 import { NodeInterface, NodeType } from './Nodes/NodeInterface';
 import { getStage } from '../../hooks/getStage';
+import axios from "axios";
 
 enum compileStatus {
     ERROR = "ERROR",
@@ -125,39 +126,36 @@ const EscapeView = () => {
     }, []);
 
     useEffect(() => {
-        if (!getStageData.isFetching && !getStageData.isError) {
-            if (getStageData.data === undefined || getStageData.data === null) {
-                window.location.reload()
-            }
-            console.log("In the escapeView Nav")
-            try {
-                //@ts-ignore
-                switch (getStageData.data.state) {
-                    case "PLAYING":
-                        console.log("in Playing")
-                        //@ts-ignore
-                        setSceneInfo(JSON.parse(getStageData.data.stage[0])[0]);
-                        break;
-                    case "STOPPED":
-                        console.log("in Stopped")
-                        removeSessionId();
-                        navigate("/");
-                        break;
-                    case "JOINABLE":
-                        console.log("in Joinable")
-                        //@ts-ignore
-                        if (getStageData.data.roomID !== null && getStageData.data.roomID !== undefined) {
+        axios.get(`${import.meta.env.VITE_GAME_BASE_URL}/join/getStage/${sessionID}`)
+            .then((response) => {
+                try {
+                    //@ts-ignore
+                    switch (response.data.state) {
+                        case "PLAYING":
+                            console.log("in Playing")
                             //@ts-ignore
-                            navigate(`/lobby/${getStageData.data.roomID}`);
-                        } else {
-                            navigate("/")
-                        }
-                        break;
+                            setSceneInfo(JSON.parse(response.data.stage[0])[0]);
+                            break;
+                        case "STOPPED":
+                            console.log("in Stopped")
+                            removeSessionId();
+                            navigate("/");
+                            break;
+                        case "JOINABLE":
+                            console.log("in Joinable")
+                            //@ts-ignore
+                            if (response.data.roomID !== null && response.data.roomID !== undefined) {
+                                //@ts-ignore
+                                navigate(`/lobby/${response.data.roomID}`);
+                            } else {
+                                navigate("/")
+                            }
+                            break;
+                    }
+                } catch (e) {
+                    window.location.reload()
                 }
-            } catch (e) {
-                window.location.reload()
-            }
-        }
+            })
     }, [getStageData.data])
 
     useEffect(() => {
