@@ -38,6 +38,7 @@ const StudentJoin = () => {
                 //@ts-ignore
                 switch (responseData.state) {
                     case "PLAYING" :
+                        console.log("in playing")
                         //@ts-ignore
                         setSessionId(responseData.sessionId);
                         //@ts-ignore

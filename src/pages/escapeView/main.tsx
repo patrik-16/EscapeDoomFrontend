@@ -129,18 +129,22 @@ const EscapeView = () => {
             if (getStageData.data === undefined || getStageData.data === null) {
                 window.location.reload()
             }
+            console.log("In the escapeView Nav")
             try {
                 //@ts-ignore
                 switch (getStageData.data.state) {
                     case "PLAYING":
+                        console.log("in Playing")
                         //@ts-ignore
                         setSceneInfo(JSON.parse(getStageData.data.stage[0])[0]);
                         break;
                     case "STOPPED":
+                        console.log("in Stopped")
                         removeSessionId();
                         navigate("/");
                         break;
                     case "JOINABLE":
+                        console.log("in Joinable")
                         //@ts-ignore
                         if (getStageData.data.roomID !== null && getStageData.data.roomID !== undefined) {
                             //@ts-ignore
