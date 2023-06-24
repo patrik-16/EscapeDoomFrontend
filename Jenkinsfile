@@ -9,13 +9,6 @@ pipeline {
             }
         }
 
-        stage('run Frontend') {
-            steps {
-                echo 'running...'
-                sh 'npm run build'
-            }
-        }
-
         stage('deploy') {
             steps {
             echo 'deploying...'
