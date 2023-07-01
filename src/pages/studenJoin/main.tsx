@@ -78,6 +78,7 @@ const StudentJoin = () => {
                     backgroundSize: 'cover',
                 }}
             >
+
                 <Typography sx={{paddingBottom: 3}} color={common.white} variant="h2"> Escape Room MEGAMAXL </Typography>
                 <Card sx={{minWidth: 550, paddingX: 3}}>
                     <CardContent>

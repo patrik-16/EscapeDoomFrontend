@@ -11,12 +11,24 @@ pipeline {
 
         stage('deploy') {
             steps {
-            echo 'deploying...'
+                echo 'maven deploy...'
 
-            sh 'chmod +x ./deployz.sh'
-            sh './deployz.sh &'
+                sh 'chmod +x ./deployz1.sh'
+                sh 'chmod +x ./deployz2.sh'
 
-            echo 'Done!'
+                sh './deployz1.sh'
+
+                script {
+                    sleep 5
+                }
+
+                sh './deployz2.sh &'
+
+                script {
+                    sleep 120
+                }
+
+                echo 'Done!'
             }
         }
     }
