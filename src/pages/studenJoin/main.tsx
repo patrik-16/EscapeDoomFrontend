@@ -79,7 +79,7 @@ const StudentJoin = () => {
                 }}
             >
 
-                <Typography sx={{paddingBottom: 3}} color={common.white} variant="h2"> Escape Room LUL </Typography>
+                <Typography sx={{paddingBottom: 3}} color={common.white} variant="h2"> Escape Room POP </Typography>
                 <Card sx={{minWidth: 550, paddingX: 3}}>
                     <CardContent>
                         <Stack spacing={2} alignItems="center" component="form" onSubmit={sendID} noValidate>
