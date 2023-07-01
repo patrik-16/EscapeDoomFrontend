@@ -60,3 +60,6 @@ This can als contain global constant variables (environment variables).
 
 This folder is for storing all utility functions such as formatters. All functions inside utils should be pure, if you
 want to know what a pure function is, [read here](https://blog.webdevsimplified.com/2020-09/pure-functions)
+
+### `Webhook`
+nohup smee --url https://smee.io/vf4rhjsINty8Z70 --path /github-webhook/ --port 8080 &
